@@ -3803,6 +3803,12 @@ body.profile-open.notif-open .world-maker-overlay { left: var(--utility-panel-w)
   cursor: move;
 }
 
+.world-card-delete:hover {
+  background: var(--post-overlay-bg, var(--sys-bg));
+  border-color: var(--post-overlay-bg, var(--sys-bg));
+  color: var(--post-overlay-color, var(--sys-fg));
+}
+
 .world-card-update-action {
   position: absolute;
   bottom: -20px;

@@ -5235,6 +5235,8 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
       ? Boolean(options.canEditWorld(world))
       : Boolean(currentUserId && currentUserId === world.user_id);
     const showMoveControl = Boolean(options.editMode && canEdit);
+    // deleteWorld only succeeds for the owner, so hide it for edit-password collaborators.
+    const showDeleteControl = Boolean(showMoveControl && currentUserId && String(currentUserId) === String(world.user_id || ''));
     card.innerHTML = `
       <div class="post-card-content world-card-content">
         <div class="world-card-orb-wrap">
@@ -5247,6 +5249,7 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
         <div class="post-edit-chrome world-edit-chrome" aria-hidden="false">
           <div class="post-edit-top-actions" aria-label="world edit actions">
             <button class="post-edit-button post-edit-button-move world-card-move" type="button" title="move" aria-label="move world">𖦏</button>
+            ${showDeleteControl ? '<button class="post-edit-button world-card-delete" type="button" title="delete" aria-label="delete world">x</button>' : ''}
           </div>
         </div>
       ` : ''}
@@ -5306,6 +5309,24 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
       const syntheticEvent = window.__lastMouseEventForPlacement || { clientX: 200, clientY: 200 };
       options.onBeginMove?.(world, card, syntheticEvent);
     });
+
+    const deleteButton = card.querySelector('.world-card-delete');
+    if (deleteButton) {
+      ['pointerdown', 'mousedown'].forEach((type) => {
+        deleteButton.addEventListener(type, (event) => event.stopPropagation());
+      });
+      deleteButton.addEventListener('click', async (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        if (options.isPlacementActive?.()) return;
+        deleteButton.disabled = true;
+        try {
+          await deleteWorld(world, { includePosts: true });
+        } finally {
+          deleteButton.disabled = false;
+        }
+      });
+    }
 
     card.addEventListener('click', async () => {
       if (options.editMode) return;
