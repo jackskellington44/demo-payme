@@ -31,10 +31,10 @@
      * fg = text color + outlines
      * ============================================= */
     --sys-bg:   #ffffff;
-    --sys-fg:   #000000;
-    /* Post cards: overridden separately in settings; default to inverted system colors */
-    --post-bg:  var(--sys-fg);
-    --post-fg:  var(--sys-bg);
+    --sys-fg:   rgba(0, 0, 0, 0.5);
+    /* Post cards: overridden separately in settings */
+    --post-bg:  rgba(0, 0, 0, 0);
+    --post-fg:  rgba(255, 255, 255, 0.5);
     --sys-font: 'Liberation Mono', 'Courier New', monospace;
 
     /* Font size for nav bar and music bar chrome text */

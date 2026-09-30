@@ -1629,8 +1629,8 @@ function initThemeColorPicker() {
 const SYS_THEME_KEY = 'demo4-sys-theme-v1';
 // postBg/postFg stay null until the user picks them, so posts keep following the system colors (inverted).
 const sysThemeState = {
-  bg: '#ffffff', fg: '#000000', bgAlpha: 1, fgAlpha: 1,
-  postBg: null, postFg: null, postBgAlpha: 1, postFgAlpha: 1,
+  bg: '#ffffff', fg: '#000000', bgAlpha: 1, fgAlpha: 0.5,
+  postBg: null, postFg: null, postBgAlpha: 0, postFgAlpha: 0.5,
   font: ''
 };
 
@@ -1669,18 +1669,18 @@ function applySysTheme(next = {}) {
   const root = document.documentElement;
   root.style.setProperty('--sys-bg', toThemeColor(sysThemeState.bg, sysThemeState.bgAlpha));
   root.style.setProperty('--sys-fg', toThemeColor(sysThemeState.fg, sysThemeState.fgAlpha));
-  if (sysThemeState.postBg) root.style.setProperty('--post-bg', toThemeColor(sysThemeState.postBg, sysThemeState.postBgAlpha));
-  else root.style.removeProperty('--post-bg');
-  if (sysThemeState.postFg) root.style.setProperty('--post-fg', toThemeColor(sysThemeState.postFg, sysThemeState.postFgAlpha));
-  else root.style.removeProperty('--post-fg');
+  root.style.setProperty('--post-bg', toThemeColor(sysThemeState.postBg || sysThemeState.fg, sysThemeState.postBgAlpha));
+  root.style.setProperty('--post-fg', toThemeColor(sysThemeState.postFg || sysThemeState.bg, sysThemeState.postFgAlpha));
   if (sysThemeState.font) root.style.setProperty('--sys-font', sysThemeState.font);
 }
 
 function loadSysTheme() {
   try {
     const saved = JSON.parse(localStorage.getItem(SYS_THEME_KEY) || 'null');
-    if (saved) applySysTheme(saved);
-  } catch {}
+    applySysTheme(saved || {});
+  } catch {
+    applySysTheme({});
+  }
 }
 
 loadSysTheme();
