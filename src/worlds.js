@@ -4385,14 +4385,18 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
       return;
     }
 
-    const { error } = await supabase
+    const { data: deletedWorlds, error } = await supabase
       .from('worlds')
       .delete()
       .eq('id', world.id)
-      .eq('user_id', getCurrentUser()?.id || '');
+      .select('id');
 
     if (error) {
       alert(`Delete failed: ${error.message}`);
+      return;
+    }
+    if (!deletedWorlds?.length) {
+      alert('Delete failed: not allowed to delete this world (check Supabase RLS policies).');
       return;
     }
 
@@ -5235,8 +5239,7 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
       ? Boolean(options.canEditWorld(world))
       : Boolean(currentUserId && currentUserId === world.user_id);
     const showMoveControl = Boolean(options.editMode && canEdit);
-    // deleteWorld only succeeds for the owner, so hide it for edit-password collaborators.
-    const showDeleteControl = Boolean(showMoveControl && currentUserId && String(currentUserId) === String(world.user_id || ''));
+    const showDeleteControl = Boolean(options.editMode && currentUserId);
     card.innerHTML = `
       <div class="post-card-content world-card-content">
         <div class="world-card-orb-wrap">
@@ -5245,10 +5248,10 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
           </div>
         </div>
       </div>
-      ${showMoveControl ? `
+      ${(showMoveControl || showDeleteControl) ? `
         <div class="post-edit-chrome world-edit-chrome" aria-hidden="false">
           <div class="post-edit-top-actions" aria-label="world edit actions">
-            <button class="post-edit-button post-edit-button-move world-card-move" type="button" title="move" aria-label="move world">𖦏</button>
+            ${showMoveControl ? '<button class="post-edit-button post-edit-button-move world-card-move" type="button" title="move" aria-label="move world">𖦏</button>' : ''}
             ${showDeleteControl ? '<button class="post-edit-button world-card-delete" type="button" title="delete" aria-label="delete world">x</button>' : ''}
           </div>
         </div>

@@ -4,6 +4,19 @@
 
 alter table public.posts enable row level security;
 
+-- RLS was previously disabled on posts, so reads/inserts need explicit policies too.
+drop policy if exists "posts_select_all" on public.posts;
+create policy "posts_select_all"
+  on public.posts for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "posts_insert_own" on public.posts;
+create policy "posts_insert_own"
+  on public.posts for insert
+  to authenticated
+  with check (user_id = auth.uid());
+
 drop policy if exists "posts_update_any_authenticated" on public.posts;
 create policy "posts_update_any_authenticated"
   on public.posts for update
