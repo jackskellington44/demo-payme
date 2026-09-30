@@ -1,0 +1,79 @@
+﻿/* ============================================ */
+/* TABLE OF CONTENTS                            */
+/* ============================================ */
+/*                                              */
+/*  0.0  Root Variables                         */
+/*  0.1  Reset / Base Styles                    */
+/*                                              */
+/*  â”€â”€ LANDING PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  */
+/*  1.0  Main Container (Landing Page)          */
+/*       âš  Early partial def lives before 0.1  */
+/*  2.0  Top Container (PFP Section)            */
+/*  3.0  Bottom Container (Inputs & Buttons)    */
+/*       3.1  Bottom Left (Inputs)              */
+/*       3.2  Bottom Right (Buttons)            */
+/*  4.0  Input Groups                           */
+/*       4.1  Input Lines (incl. Autofill)      */
+/*  5.0  View Toggle Buttons                    */
+/*  6.0  PFP Selection                          */
+/*       6.1  PFP Grid                          */
+/*       6.2  PFP Containers                    */
+/*       6.3  Upload PFP Container              */
+/*  7.0  Utility Classes                        */
+/*                                              */
+/*  â”€â”€ MAIN PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  */
+/*  8.0  Main Page Container                    */
+/*  9.0  Post Feed                              */
+/*  10.0 Post Form Overlay                      */
+/*       10.1  Post Form                        */
+/*       10.2  Category Row                     */
+/*       10.3  Category Input (Inline Add)      */
+/*       10.4  File Label                       */
+/*       10.5  Post Form Text & Rich Text       */
+/*       10.6  YouTube Input                    */
+/*       10.7  Post Form Buttons                */
+/*  11.0 Post Cards                             */
+/*       11.1  Post Card Content                */
+/*       11.2  Post Title                       */
+/*       11.3  Post Body                        */
+/*       11.4  Post Image                       */
+/*       11.5  Post Layout Variants             */
+/*       11.6  File Preview Tiles               */
+/*       11.7  Title Hierarchy                  */
+/*       11.8  Post Footer                      */
+/*  12.0 Cover Image Prompt                     */
+/*  13.0 Edit Mode                              */
+/*       13.1  Edit/Delete Footer Actions       */
+/*  14.0 Log Out Button                         */
+/*  15.0 Footer Filter Buttons                  */
+/*                                              */
+/*  â”€â”€ OVERLAYS & MODALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  */
+/*  16.0 Post Detail Modal                      */
+/*  17.0 Canvas Viewport & Post Canvas          */
+/*  18.0 Link Layer                             */
+/*  19.0 Multi-File Navigator                   */
+/*  19.1 Notification Bar & Panel               */
+/*  19.2 PFP Widget                             */
+/*  19.3 PFP Picker                             */
+/*  19.4 Profile Modal                          */
+/*  20.0 Music Bar                              */
+/*       20.1  Music Panel Overlay              */
+/*  20.2 Help Overlay                           */
+/*                                              */
+/*  â”€â”€ GLOBAL UTILITIES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  */
+/*  21.0 Scrollbar Hiding                       */
+/*  21.1 Video Controls Suppression             */
+/*                                              */
+/* ============================================ */
+
+/* ============================================ */
+/* Entry point — imports all partials.          */
+/* To add a Google Font, paste your <link> in   */
+/* index.html / main.html, then update          */
+/* --font-family in css/base.css.               */
+/* ============================================ */
+
+@import "./css/base.css";
+@import "./css/landing.css";
+@import "./css/main.css";
+@import "./css/overlays.css";

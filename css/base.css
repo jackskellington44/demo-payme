@@ -1,0 +1,127 @@
+﻿/* ============================================ */
+/* base.css — CSS variables & reset (0.0 – 0.1)     */
+/* ============================================ */
+
+
+/* ============================================ */
+/* 0.0 ROOT VARIABLES                          */
+/* ============================================ */
+
+:root {
+    /* =============================================
+     * CUSTOMIZATION â€” change these to theme the site
+     * =============================================
+     *
+     * Font:
+     *   1. Add a <link> to your font in index.html, e.g.
+     *      <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+     *   2. Update --font-family below.
+     *
+     * Background:
+     *   Swap --bg-url to any image path or CSS gradient,
+     *   e.g. url("./images/my-bg.jpg") or linear-gradient(135deg, #0f0c29, #302b63).
+     * ============================================= */
+    --font-family:    Arial, Helvetica, sans-serif;
+    --bg-url:         url("/images/background.jpg");
+
+    /* =============================================
+     * SYSTEM THEME — user-customizable
+     * Overridden at runtime via JS from localStorage.
+     * bg = solid fill for chrome bars
+     * fg = text color + outlines
+     * ============================================= */
+    --sys-bg:   #ffffff;
+    --sys-fg:   #000000;
+    --sys-font: 'Liberation Mono', 'Courier New', monospace;
+
+    /* Font size for nav bar and music bar chrome text */
+    --chrome-bar-font: 0.9rem;
+
+    /* Shared text size for inner system modals (slightly above chrome bars) */
+    --inner-system-modal-font: calc(var(--chrome-bar-font) + 0.1rem);
+
+    /* Shared backdrop blur tiers */
+    --overlay-blur-utility: blur(6px) saturate(106%);
+    --overlay-blur-form: blur(10px) saturate(114%);
+
+    /* Font scale */
+    --font-size-base: 0.875rem;
+    --font-size-sm:   1rem;
+    --font-size-md:   1.5rem;
+    --font-size-lg:   2rem;
+    --font-size-xl:   2.5rem;
+    --font-size-2xl:  3rem;
+    --font-size-3xl:  4rem;
+    --font-size-4xl:  5rem;
+    --font-size-5xl:  6.25rem;
+    --font-size-responsive: clamp(2rem, 8vw, 6.25rem);
+    --font-size-button:     clamp(1.5rem, 5vw, 5rem);
+    --font-size-pfp-plus:   clamp(2rem, 4vw, 3.125rem);
+
+    /* Layout */
+    --toolbar-w:     44px;
+    --notif-bar-w:   44px;  /* right-side toolbar width — used as right offset throughout */
+    --notif-panel-w: 16%;
+    --profile-w:     20%;
+
+    /* UI tint — overridden by JS when user picks a color */
+    --ui-tint-bg: rgba(0, 0, 0, 0.4);
+
+    /* Post card typography */
+    --post-title-size:  var(--font-size-xl);
+    --post-body-size:   var(--font-size-md);
+    --post-footer-size: var(--font-size-lg);
+}
+
+/* ============================================ */
+/* 0.1 RESET / BASE STYLES                     */
+/* ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"],
+.post-form-text,
+.post-form-category-edit-input,
+.music-link-inline-input,
+.music-rename-input,
+.settings-color-hex,
+.profile-edit-input,
+.profile-username-input,
+#postDetailContent,
+#postDetailContent .post-body,
+#postDetailContent .post-body-formatted,
+.comment-body {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+img,
+svg,
+.ui-icon,
+button,
+[role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    font-family: var(--sys-font, var(--font-family));
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+

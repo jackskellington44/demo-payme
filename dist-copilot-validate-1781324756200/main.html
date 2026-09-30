@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- ================================================ -->
+<!-- MONKEY SPACE - Main Feed Page                   -->
+<!-- ================================================ -->
+<!--                                                  -->
+<!-- PAGE STRUCTURE:                                 -->
+<!--  1. Header + Meta Tags                          -->
+<!--  2. Main Feed Container                          -->
+<!--  3. Post Form Overlay                            -->
+<!--  4. Post Detail Modal                            -->
+<!--  5. Notification Panel                           -->
+<!--  6. Profile Modal                                -->
+<!--  7. Hidden Profile Inputs                        -->
+<!--  8. Music Bar                                    -->
+<!--  9. Music Panel Overlay                          -->
+<!-- 10. Help Overlay                                 -->
+<!-- 11. Scripts                                      -->
+<!--                                                  -->
+<!-- ================================================ -->
+
+<head>
+  <!-- ================================================ -->
+  <!-- 1. META TAGS & RESOURCES                         -->
+  <!-- ================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>monkey space</title>
+    <link rel="icon" href="./images/favicon.png" />
+  <script type="module" crossorigin src="/assets/main-DP663k9f.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/ui-alerts-BrH69Tfl.js">
+  <link rel="stylesheet" crossorigin href="/assets/ui-alerts-kHwiOw-X.css">
+</head>
+
+<body>
+  <!-- ================================================ -->
+  <!-- 2. MAIN FEED CONTAINER                           -->
+  <!-- ================================================ -->
+  <!-- Main feed page -->
+  <div class="main-page-container" id="mainPageContainer">
+
+    <!-- Scrollable viewport (background + scrolling) -->
+    <div id="canvasViewport">
+      <svg id="categoryLayer" width="100%" height="100%"></svg>
+      <svg id="linkLayer" width="100%" height="100%"></svg>
+      <div id="postCanvas"></div>
+    </div>
+
+    <button id="logoutBtn" class="view-toggle logout-btn">log out</button>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 3. POST FORM OVERLAY                             -->
+  <!-- ================================================ -->
+  <!-- Post form overlay (hidden by default, opens on right-click) -->
+  <div class="post-form-overlay" id="postFormOverlay" style="display: none;">
+        <div class="post-form" id="postForm">
+
+            <input type="text" class="post-form-title" id="postTitle" placeholder="title" maxlength="75" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
+
+            <div class="post-form-category-row">
+              <input type="hidden" id="postCategory" value="">
+              <div class="post-form-category-custom" id="postCategoryCustom">
+                <div class="post-form-category-display" id="postCategoryDisplay" role="button" tabindex="0">
+                  <span id="postCategoryDisplayText" class="is-placeholder">select category</span>
+                  <span class="post-form-category-display-actions">
+                    <button type="button" class="post-form-category-inline-btn" id="postCategoryDropdownToggle" aria-label="open category dropdown">▾</button>
+                    <button type="button" class="post-form-category-inline-btn" id="addCategoryToggle" aria-label="open category editor">☰</button>
+                  </span>
+                </div>
+                <div class="post-form-category-dropdown" id="postCategoryDropdown"></div>
+              </div>
+            </div>
+
+            <div class="post-form-category-panel" id="postCategoryPanel" style="display:none;">
+              <div class="post-form-category-create-row">
+                <input type="text" class="post-form-category-input" id="postCategoryInput" placeholder="new category" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
+                <button type="button" class="post-form-category-create-btn" id="postCategoryCreateBtn">add</button>
+              </div>
+              <div class="post-form-category-list" id="postCategoryList"></div>
+            </div>
+
+            <div class="post-form-asset-row">
+              <label class="post-form-file-label" id="postFileLabel">
+                <span id="postFileName">choose file</span>
+                <input type="file" id="postFileInput" multiple>
+              </label>
+
+              <input type="text" class="post-form-link" id="postYoutubeInput" placeholder="url" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
+            </div>
+
+            <label class="post-form-file-label" id="postCoverImageLabel" style="display:none;">
+            <span id="postCoverFileName">choose cover image</span>
+            <input type="file" id="postCoverImageInput" accept="image/*">
+            </label>
+
+            <div class="post-form-text" id="postText" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="text" spellcheck="false" autocorrect="off" autocapitalize="off"></div>
+
+            <div class="post-form-buttons">
+            <button id="postDeleteBtn" style="display:none; margin-right:auto; color:rgba(255,100,100,0.6);">delete</button>
+            <button id="postSubmitBtn" aria-label="submit post">✓</button>
+            <button id="postCancelBtn" aria-label="cancel post">x</button>
+            </div>
+
+        </div>
+  </div>
+
+
+  <!-- ================================================ -->
+  <!-- 4. POST DETAIL MODAL                             -->
+  <!-- ================================================ -->
+  <!-- POST DETAIL MODAL -->
+  <div id="postDetailOverlay" style="display:none;">
+  <div id="postDetailModal" class="post-detail-modal">
+
+    <!-- THREAD HEADER BAR -->
+    <div class="pd-thread-bar" id="pdThreadBar" style="display:none;">
+        <div class="pd-thread-tabs" id="pdThreadTabs"><!-- tabs injected by JS --></div>
+    </div>
+
+    <div class="pd-file-tab-row" id="pdFileTabRow" style="display:none;"></div>
+
+    <!-- USER + TITLE ROW -->
+    <div class="pd-identity-row" id="pdIdentityRow">
+        <div class="pd-user-block" id="pdUserBlock">
+            <img class="pd-pfp" id="pdPfp" src="" alt="">
+            <span class="pd-username" id="pdUsername"></span>
+        </div>
+        <div class="pd-title-block">
+            <span class="pd-date" id="pdDate"></span>
+            <div class="pd-title" id="pdTitle"><!-- blank if no title --></div>
+        </div>
+    </div>
+
+      <div class="pd-audio-dock" id="pdAudioDock" style="display:none;"></div>
+
+    <!-- MAIN BODY: content left + comments right -->
+        <!-- MAIN BODY: 3 adjustable columns -->
+    <div class="pd-body" id="pdBody">
+
+      <!-- Visual column -->
+      <div class="pd-col pd-visual-col" id="pdVisualCol" style="display:none;">
+        <button class="pd-visual-fullscreen-btn" id="pdVisualFullscreenBtn" type="button" title="fullscreen">⛶</button>
+        <div class="pd-visual-inner" id="pdVisualInner"></div>
+      </div>
+
+      <!-- Resize handle 1 (visual | text) -->
+      <div class="pd-resize-handle" id="pdHandle1" style="display:none;"></div>
+
+      <!-- Text column -->
+      <div class="pd-col pd-text-col" id="pdTextCol" style="display:none;">
+        <div id="postDetailContent" class="pd-text-inner"></div>
+      </div>
+
+      <!-- Resize handle 2 (text | comments) -->
+      <div class="pd-resize-handle" id="pdHandle2"></div>
+
+      <!-- Comments column -->
+      <div class="pd-col pd-comments-col" id="pdCommentsCol">
+        <div class="pd-comments-inner">
+          <div id="commentsList" class="comments-list"></div>
+        </div>
+        <div class="comment-form">
+          <input id="commentInput" class="comment-input" type="text" placeholder="write a comment..." autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" />
+          <button id="commentSubmitBtn" class="comment-submit-btn">↲</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  </div>
+
+  <div id="pdFileContextMenu">
+    <button id="pdCtxDownloadFile" type="button" class="pd-ctx-item">download file</button>
+    <button id="pdCtxDownloadAll" type="button" class="pd-ctx-item">download all files</button>
+  </div>
+
+  <div id="postSpellContextMenu" aria-hidden="true">
+    <button id="postSpellReplaceBtn" type="button" class="post-file-preview-download-btn post-spell-menu-btn"></button>
+    <button id="postSpellIgnoreBtn" type="button" class="post-file-preview-download-btn post-spell-menu-btn">ignore</button>
+    <button id="postSpellIgnoreAllBtn" type="button" class="post-file-preview-download-btn post-spell-menu-btn">ignore all</button>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 5. RIGHT TOOLBAR                                 -->
+  <!-- ================================================ -->
+  <div id="rightToolbar" class="right-toolbar">
+    <button id="toolbarProfileBtn" class="toolbar-btn" type="button" title="your profile" aria-label="your profile">◌</button>
+    <button id="toolbarNotifBtn" class="toolbar-btn" type="button" title="notifications" aria-label="notifications">◉</button>
+    <button id="toolbarPostBtn" class="toolbar-btn" type="button" title="new post" aria-label="new post">+</button>
+    <button id="toolbarSettingsBtn" class="toolbar-btn" type="button" title="settings" aria-label="settings">⚙</button>
+    <button id="toolbarHelpBtn" class="toolbar-btn" type="button" title="help" aria-label="help">?</button>
+  </div>
+
+  <!-- Notification panel (slides from behind toolbar) -->
+  <div id="notifPanel" class="notif-panel">
+        <div class="notif-panel-inner">
+      <div class="notif-heading">messages</div>
+      <div class="modal-separator modal-separator-messages">-- . ... ... .- --. . ...</div>
+            <div class="notif-list" id="notifList"></div>
+        </div>
+  </div>
+
+  <!-- Settings panel (slides from behind toolbar) -->
+  <div id="settingsPanel" class="settings-panel">
+    <div class="settings-panel-inner" id="settingsPanelInner">
+      <div class="settings-control-row settings-control-row-compact">
+        <input type="color" id="settingsBgColor" class="settings-color-swatch settings-color-swatch-lg" value="#ffffff" title="background color">
+        <input type="color" id="settingsFgColor" class="settings-color-swatch settings-color-swatch-sm" value="#000000" title="font and outline color">
+        <button id="settingsAnimBtn" class="settings-anim-btn" type="button" aria-label="toggle movement">͙͘͡★</button>
+      </div>
+      <div class="settings-control-row settings-control-row-select settings-control-row-select-only">
+        <div class="settings-select-wrap">
+          <select id="settingsFontSelect" class="settings-font-select">
+            <option value="'Liberation Mono', 'Courier New', monospace">Liberation Mono</option>
+            <option value="'Liberation Sans', Arial, sans-serif">Liberation Sans</option>
+            <option value="'Liberation Serif', 'Times New Roman', serif">Liberation Serif</option>
+            <option value="'Linux Biolinum G', 'Liberation Sans', Arial, sans-serif">Linux Biolinum G</option>
+          </select>
+          <span class="settings-select-chevron" aria-hidden="true">▾</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- 6. PROFILE MODAL                                 -->
+  <!-- ================================================ -->
+  <!-- Profile Modal -->
+  <div id="profileOverlay">
+        <div id="profileModal" class="profile-modal">
+            <div class="profile-cover-wrap" id="profileCoverWrap">
+            <img id="profileCoverImg" class="profile-cover-img" src="" alt="" style="display:none;">
+            <div class="profile-cover-placeholder" id="profileCoverPlaceholder"></div>
+            <div class="profile-upload-overlay" id="profileCoverOverlay" style="display:none;">
+                <label for="profileCoverInput">+</label>
+            </div>
+            </div>
+
+            <div class="profile-identity-row">
+            <div class="profile-pfp-wrap">
+                <div id="profilePfpWidget"></div>
+                <div class="profile-upload-overlay" id="profilePfpOverlay" style="display:none;">
+                <label for="profilePfpInput">+</label>
+                </div>
+            </div>
+            <div class="profile-identity-text">
+              <span id="profileUsername" class="profile-username"></span>
+              <input id="profileUsernameInput" class="profile-username-input" maxlength="12" style="display:none;" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
+            </div>
+            <div class="profile-action-group">
+              <button id="profileListToggleBtn" class="profile-list-toggle-btn" type="button" aria-label="toggle between shares and worlds">✉</button>
+              <button id="profileEditBtn" class="profile-edit-btn" type="button" aria-label="edit profile">✂</button>
+              <button id="profileCancelBtn" class="profile-edit-btn profile-cancel-btn" type="button" style="display:none;" aria-label="cancel profile edit">✕</button>
+              <button id="profileSaveBtn" class="profile-edit-btn profile-save-btn" style="display:none;" type="button" aria-label="save profile changes">✓</button>
+            </div>
+            </div>
+
+            <div class="profile-edit-fields" id="profileEditFields" style="display:none;">
+              <div class="profile-edit-field">
+                <span>current password</span>
+                <input id="profilePasswordInput" class="profile-edit-input" type="password" autocomplete="current-password" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="enter current password">
+              </div>
+            </div>
+            <div id="profilePostsList" class="profile-posts-list"></div>
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- 7. HIDDEN PROFILE INPUTS                         -->
+    <!-- ================================================ -->
+    <!-- Hidden file inputs for profile editing -->
+    <input type="file" id="profileCoverInput" accept="image/*" style="display:none;">
+    <input type="file" id="profilePfpInput" accept="image/webp,image/gif,image/*" style="display:none;">
+
+    <!-- ================================================ -->
+    <!-- 8. MUSIC BAR                                     -->
+    <!-- ================================================ -->
+    <div id="musicBar" class="music-bar">
+
+      <!-- Left zone: playback controls + track identity -->
+      <div class="music-bar-zone music-bar-zone-left">
+        <button id="musicPrev" class="music-bar-box" type="button" title="previous" aria-label="previous">◀</button>
+        <button id="musicPlayPause" class="music-bar-box music-bar-box-big" type="button" title="play / pause" aria-label="play">▶</button>
+        <button id="musicNext" class="music-bar-box" type="button" title="next" aria-label="next">▶</button>
+
+        <div class="music-bar-track">
+          <span id="musicBarUsername" class="music-bar-username"></span>
+          <span id="musicBarSep" class="music-bar-sep" style="display:none;"> / </span>
+          <span id="musicBarTitle" class="music-bar-title"></span>
+          <span id="musicBarArtist" class="music-bar-artist"></span>
+        </div>
+      </div>
+
+      <!-- Right zone: volume + panel + mode controls -->
+      <div class="music-bar-zone music-bar-zone-right">
+        <!-- volume wrap inserted by music.js before musicOpenPanel -->
+        <button id="musicOpenPanel" class="music-bar-box" type="button" title="music panel" aria-label="open music panel">♬</button>
+        <button id="musicShuffle" class="music-bar-box" type="button" title="order: in order" aria-label="playback order">↺</button>
+        <!-- musicLoop kept hidden for JS compat — logic merged into musicShuffle -->
+        <button id="musicLoop" style="display:none;" aria-hidden="true"></button>
+      </div>
+
+      <!-- Hidden elements kept for JS compatibility -->
+      <img id="musicBarPfp" class="music-bar-pfp" src="./images/pfps/default.png" alt="">
+      <div id="musicBarLeft" class="music-bar-left"></div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- 9. MUSIC PANEL OVERLAY                           -->
+    <!-- ================================================ -->
+    <div id="musicPanelOverlay" class="music-panel-overlay">
+      <div class="music-panel">
+        <div id="musicPanelTopControls" class="music-panel-top-controls">
+          <button id="musicAddTrackBtn" class="music-ctrl-btn music-panel-top-btn" type="button">add track</button>
+          <button id="musicSearchBtn" class="music-ctrl-btn music-panel-top-btn" type="button">search tracks</button>
+          <button id="musicDownloadPlaylist" class="music-ctrl-btn music-panel-top-btn" type="button">download csv</button>
+          <button id="musicEditBtn" class="music-ctrl-btn music-panel-top-btn" type="button">edit</button>
+        </div>
+
+        <div id="musicTrackList" class="music-track-list"></div>
+
+      </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- 10. HELP OVERLAY                                 -->
+    <!-- ================================================ -->
+    <div id="helpOverlay" class="help-overlay" style="display:none;">
+      <div class="help-modal">
+        <div class="help-heading">help</div>
+        <div class="modal-separator modal-separator-help">.... . .-.. .--.</div>
+        <div class="help-grid">
+
+      <div class="help-section">
+        <div class="help-section-title">Navigating the feed</div>
+        <div class="help-item"><span class="help-key">drag</span> pan around the canvas</div>
+        <div class="help-item"><span class="help-key">middle-click drag</span> pan (works in any mode)</div>
+        <div class="help-item"><span class="help-key">scroll</span> zoom in / out</div>
+        <div class="help-item"><span class="help-key">H</span> open / close this help screen</div>
+        <div class="help-item"><span class="help-key">Esc</span> close any open panel or mode</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">Creating posts</div>
+        <div class="help-item"><span class="help-key">right-click</span> open new post form</div>
+        <div class="help-item"><span class="help-key">right-click a post → right-click canvas</span> create a post linked to that one</div>
+        <div class="help-item"><span class="help-key">place</span> after submitting, move mouse to position — click to drop</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">Editing your posts</div>
+        <div class="help-item"><span class="help-key">double right-click</span> enter / exit edit mode</div>
+        <div class="help-item"><span class="help-key">✎</span> edit a post's content</div>
+        <div class="help-item"><span class="help-key">✕</span> delete a post</div>
+        <div class="help-item"><span class="help-key">⟴</span> pick up and reposition a post</div>
+        <div class="help-item"><span class="help-key">𓍯</span> toggle thread mode on your post, then click posts to add/remove multiple thread links</div>
+        <div class="help-item"><span class="help-key">corner drag</span> resize your post larger or smaller in edit mode</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">Reading posts</div>
+        <div class="help-item"><span class="help-key">hold click (~400ms)</span> open full post preview</div>
+        <div class="help-item"><span class="help-key">tabs in preview</span> jump to connected posts</div>
+        <div class="help-item"><span class="help-key">×  or  Esc</span> close preview</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">Threads &amp; filters</div>
+        <div class="help-item"><span class="help-key">click a link line</span> show only that connected thread</div>
+        <div class="help-item"><span class="help-key">click empty canvas</span> clear thread filter</div>
+        <div class="help-item"><span class="help-key">click username</span> filter feed to that person</div>
+        <div class="help-item"><span class="help-key">click category</span> filter feed to that category</div>
+        <div class="help-item"><span class="help-key">click again</span> clear any filter</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">Profiles</div>
+        <div class="help-item"><span class="help-key">hold pfp (~400ms)</span> open that user's profile</div>
+        <div class="help-item"><span class="help-key">edit button</span> enter edit mode on your profile only</div>
+        <div class="help-item"><span class="help-key">in edit mode</span> click cover or pfp to change image, username becomes editable</div>
+        <div class="help-item"><span class="help-key">save</span> confirm changes</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">Notifications</div>
+        <div class="help-item"><span class="help-key">click the right edge bar</span> open / close notifications</div>
+        <div class="help-item"><span class="help-key">click a notification</span> jump to that post</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">Music</div>
+        <div class="help-item"><span class="help-key">‹ ›</span> previous / next track</div>
+        <div class="help-item"><span class="help-key">▶︎ / ▐▐</span> play / pause</div>
+        <div class="help-item"><span class="help-key">⇄</span> toggle shuffle</div>
+        <div class="help-item"><span class="help-key">↺</span> toggle loop</div>
+        <div class="help-item"><span class="help-key">△ / ▽</span> move bar to top or bottom</div>
+        <div class="help-item"><span class="help-key">≡</span> open music panel</div>
+        <div class="help-item"><span class="help-key">drag or click panel</span> upload a track</div>
+        <div class="help-item"><span class="help-key">double right-click panel</span> enter / exit edit mode (your tracks only)</div>
+        <div class="help-item"><span class="help-key">in edit mode</span> click title or artist to rename — Enter to save</div>
+        <div class="help-item"><span class="help-key">⤓ playlist</span> download all tracks as a zip</div>
+      </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- 11. SCRIPTS                                      -->
+    <!-- ================================================ -->
+</body>
+</html>

@@ -1,0 +1,3104 @@
+﻿/* ============================================ */
+/* main.css — Main page & post feed styles (8.0 – 15.0) */
+/* ============================================ */
+
+/* ============================================ */
+/* 8.0 MAIN PAGE CONTAINER                     */
+/* ============================================ */
+
+.main-page-container {
+    width: 100vw;
+    height: 100vh;
+    padding: 2%;
+    background-image: var(--bg-url);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+}
+
+/* ============================================ */
+/* 9.0 POST FEED                               */
+/* ============================================ */
+
+.post-feed {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 40px;
+}
+
+/* ============================================ */
+/* 10.0 POST FORM OVERLAY                      */
+/* ============================================ */
+
+.post-form-overlay {
+    position: fixed;
+    top: 44px;
+    left: 0;
+    bottom: 44px;
+    right: var(--toolbar-w);
+    padding: 0;
+    background: var(--post-overlay-bg, var(--sys-bg));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    z-index: 230;
+}
+
+/* === 10.1 POST FORM === */
+.post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    overflow: auto;
+    padding: clamp(16px, 2.4vw, 30px);
+    border: none;
+    background: var(--post-overlay-bg, var(--sys-bg));
+    box-shadow: none;
+    font-family: var(--post-overlay-font, var(--sys-font, inherit));
+    color: var(--post-overlay-color, var(--sys-fg));
+}
+
+.post-form {
+    --post-input-size: 1.04rem;
+}
+
+.post-form-title {
+    background: transparent;
+    border: 1px solid var(--post-overlay-outline, var(--post-overlay-color, var(--sys-fg)));
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-family: inherit;
+    outline: none;
+    padding: 10px 12px;
+    transition: none;
+}
+
+.post-form-title::placeholder {
+    color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 65%, transparent);
+    font-style: italic;
+}
+
+.post-form-password-gate {
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.post-form-password-input {
+    width: min(360px, 82vw);
+    text-align: center;
+}
+
+.post-form-password-error {
+    min-height: 1.1em;
+    color: color-mix(in srgb, #ff9d9d 88%, var(--post-overlay-color, var(--sys-fg)) 12%);
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+/* === 10.2 POST FORM CATEGORY ROW === */
+.post-form-category-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.post-form-category-custom {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+}
+
+.post-form-category-display {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: transparent;
+    border: 1px solid var(--post-overlay-outline, var(--post-overlay-color, var(--sys-fg)));
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-family: inherit;
+    outline: none;
+    padding: 10px 12px 10px 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: none;
+}
+
+.post-form-category-display .is-placeholder {
+    color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 65%, transparent);
+    font-style: italic;
+}
+
+.post-form-category-display-actions {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.post-form-category-inline-btn {
+    background: transparent;
+    border: none;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.post-form-category-inline-btn:hover {
+    color: var(--post-overlay-color, var(--sys-fg));
+}
+
+.post-form-category-display.is-disabled,
+.post-form-category-inline-btn.is-disabled {
+    opacity: 0.42;
+    pointer-events: none;
+}
+
+.post-form-category-chevron {
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    transition: none;
+}
+
+.post-form-category-dropdown {
+    display: none;
+    flex-direction: column;
+    position: static;
+    width: 100%;
+    background: var(--post-overlay-bg, var(--sys-bg));
+    border: 1px solid var(--post-overlay-color, var(--sys-fg));
+    border-top: none;
+    border-radius: 2px;
+    z-index: 50;
+    max-height: 180px;
+    overflow-y: auto;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+
+.post-form-category-option {
+    padding: 10px 12px;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-family: inherit;
+    cursor: pointer;
+    border-bottom: 1px solid color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 10%, transparent);
+    transition: none;
+}
+
+.post-form-category-option:last-child { border-bottom: none; }
+
+/* ============================================ */
+/* CUSTOM CATEGORY COLOR PICKER                 */
+/* ============================================ */
+.cat-color-picker {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    position: fixed;
+    z-index: 9999;
+    width: 192px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 2px;
+}
+
+.cat-color-picker.open {
+    display: flex;
+}
+
+.ccp-sb {
+    width: 100%;
+    aspect-ratio: 1;
+    position: relative;
+    cursor: crosshair;
+    border-radius: 1px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.ccp-sb-white {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #fff, transparent);
+}
+
+.ccp-sb-black {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, #000);
+}
+
+.ccp-cursor {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+.ccp-hue {
+    width: 100%;
+    height: 10px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+    border-radius: 1px;
+    cursor: pointer;
+    outline: none;
+    flex-shrink: 0;
+}
+
+.ccp-hue::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 14px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+.ccp-hue::-moz-range-thumb {
+    width: 10px;
+    height: 14px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+.ccp-confirm {
+    align-self: flex-end;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.88rem;
+    padding: 3px 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.ccp-confirm:hover {
+    color: rgba(255, 255, 255, 0.95);
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+.post-form-category-menu-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    flex-shrink: 0;
+    z-index: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.post-form-category-menu-btn:hover,
+.post-form-category-menu-btn.is-open {
+    color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 88%, transparent);
+    opacity: 1;
+}
+
+.post-form-category-panel {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    margin-top: -20px;
+    padding: 0;
+    width: 100%;
+    border: 1px solid var(--post-overlay-color, var(--sys-fg));
+    border-top: none;
+    border-radius: 2px;
+    background: var(--post-overlay-bg, var(--sys-bg));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    position: relative;
+    box-shadow: none;
+}
+
+.post-form-category-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.post-form-category-panel-title {
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.post-form-category-panel-close {
+    background: transparent;
+    border: none;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.post-form-category-panel-close:hover {
+    color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 88%, transparent);
+}
+
+/* === 10.3 POST FORM CATEGORY INPUT (inline add) === */
+.post-form-category-create-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-bottom: 1px solid color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 10%, transparent);
+}
+
+.post-form-category-input {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--post-overlay-outline, var(--post-overlay-color, var(--sys-fg)));
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-family: inherit;
+    outline: none;
+    padding: 8px 10px;
+    transition: none;
+}
+
+.post-form-category-input::placeholder {
+    color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 70%, transparent);
+}
+
+.post-form-category-create-btn {
+    background: transparent;
+    border: none;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-family: inherit;
+    padding: 2px 4px;
+    cursor: pointer;
+    transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.post-form-category-create-btn:hover {
+    color: var(--post-overlay-color, var(--sys-fg));
+    opacity: 0.9;
+}
+
+.post-form-category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.post-form-category-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 10px 12px;
+    border-bottom: 1px solid color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 10%, transparent);
+}
+
+.post-form-category-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.post-form-category-color-swatch {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    border: 1px solid var(--post-overlay-color, var(--sys-fg));
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.post-form-category-color-swatch:hover {
+    border-color: var(--post-overlay-color, var(--sys-fg));
+    transform: scale(1.08);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 10%, transparent);
+}
+
+.post-form-category-picker {
+    position: absolute;
+    z-index: 8;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    width: 148px;
+    padding: 9px;
+    border: 1px solid var(--post-overlay-color, var(--sys-fg));
+    border-radius: 3px;
+    background: var(--post-overlay-bg, var(--sys-bg));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+
+.post-form-category-picker-sv {
+    --picker-hue: 210;
+    position: relative;
+    grid-column: 1 / -1;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--post-overlay-color, var(--sys-fg));
+    cursor: crosshair;
+    background:
+      linear-gradient(to top, #000, rgba(0, 0, 0, 0)),
+      linear-gradient(to right, #fff, hsl(var(--picker-hue), 100%, 50%));
+}
+
+.post-form-category-picker-sv-cursor {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.post-form-category-picker-hue {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    margin: 0;
+    height: 12px;
+    background: transparent;
+}
+
+.post-form-category-picker-hue::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: linear-gradient(
+      to right,
+      #ff0000 0%,
+      #ffff00 17%,
+      #00ff00 33%,
+      #00ffff 50%,
+      #0000ff 67%,
+      #ff00ff 83%,
+      #ff0000 100%
+    );
+}
+
+.post-form-category-picker-hue::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+    margin-top: -3px;
+    cursor: pointer;
+}
+
+.post-form-category-picker-hue::-moz-range-track {
+    height: 6px;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: linear-gradient(
+      to right,
+      #ff0000 0%,
+      #ffff00 17%,
+      #00ff00 33%,
+      #00ffff 50%,
+      #0000ff 67%,
+      #ff00ff 83%,
+      #ff0000 100%
+    );
+}
+
+.post-form-category-picker-hue::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+}
+
+.post-form-category-picker-submit {
+    justify-self: end;
+    align-self: center;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 0;
+    color: var(--post-overlay-color, var(--sys-fg));
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.post-form-category-picker-submit:hover {
+    transform: scale(1.06);
+    color: var(--post-overlay-color, var(--sys-fg));
+}
+
+.post-form-category-name,
+.post-form-category-edit-input {
+    flex: 1;
+    min-width: 0;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-family: inherit;
+}
+
+.post-form-category-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: text;
+}
+
+.post-form-category-edit-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    caret-color: var(--post-overlay-color, var(--sys-fg));
+}
+
+.post-form-category-edit-input::selection {
+    background: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 16%, transparent);
+    color: var(--post-overlay-color, var(--sys-fg));
+}
+
+.post-form-category-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.post-form-category-action {
+    background: transparent;
+    border: none;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.post-form-category-action:hover {
+    color: var(--post-overlay-color, var(--sys-fg));
+}
+
+.post-form-category-action.delete:hover {
+    color: var(--post-overlay-color, var(--sys-fg));
+}
+
+.post-form-category-empty {
+    padding: 10px 12px;
+    color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 64%, transparent);
+    font-size: var(--post-input-size);
+}
+
+.post-form-asset-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px;
+}
+
+/* === 10.4 POST FORM FILE === */
+.post-form-file-label {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--post-overlay-color, var(--sys-fg));
+    border-radius: 2px;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-style: italic;
+    cursor: pointer;
+    padding: 8px 10px;
+    min-width: 0;
+    transition: none;
+}
+
+.post-form-file-label input[type="file"] {
+    display: none;
+}
+
+/* === 10.5 POST FORM TEXT === */
+.post-form-text {
+    background: transparent;
+    border: 1px solid var(--post-overlay-color, var(--sys-fg));
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+    font-family: inherit;
+    outline: none;
+    min-height: 160px;
+    padding: 10px 12px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+        transition: none;
+}
+
+.post-form-text:empty::before {
+  content: attr(data-placeholder);
+        color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 70%, transparent);
+  pointer-events: none;
+}
+
+.post-form-text p,
+.post-form-text div,
+.post-body,
+.post-body p,
+.post-body div {
+  margin: 0 0 0.75em;
+}
+
+.post-body {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.post-form-text p:last-child,
+.post-form-text div:last-child,
+.post-body p:last-child,
+.post-body div:last-child {
+  margin-bottom: 0;
+}
+
+.post-form-text ul,
+.post-form-text ol,
+.post-body ul,
+.post-body ol {
+  margin: 0.35em 0 0.75em;
+  padding-left: 1.35em;
+  list-style-position: outside;
+}
+
+.post-form-text ul,
+.post-body ul {
+  list-style-type: disc;
+}
+
+.post-form-text ol,
+.post-body ol {
+  list-style-type: decimal;
+}
+
+.post-form-text li,
+.post-body li {
+  margin: 0.2em 0;
+}
+
+.post-form-text strong,
+.post-body strong {
+  font-weight: bold;
+}
+
+.post-form-text em,
+.post-body em {
+  font-style: italic;
+}
+
+.mention-token {
+    text-decoration: underline;
+    text-decoration-thickness: 1.25px;
+    text-underline-offset: 0.12em;
+    text-decoration-color: currentColor;
+}
+
+.mention-token-link {
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.mention-token-link:hover {
+    opacity: 0.8;
+}
+
+.spellcheck-token {
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+    text-decoration-thickness: 1px;
+    text-decoration-color: currentColor;
+    text-underline-offset: 0.14em;
+    cursor: pointer;
+}
+
+#postSpellContextMenu {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    min-width: 184px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.88);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 1200;
+}
+
+#postSpellContextMenu.show {
+    display: flex;
+}
+
+.post-spell-menu-btn.post-file-preview-download-btn {
+    position: static;
+    transform: none;
+    opacity: 1;
+    width: 100%;
+    justify-content: flex-start;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    padding: 8px 10px;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: left;
+}
+
+.post-spell-menu-btn.post-file-preview-download-btn:hover {
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.post-spell-menu-btn.post-file-preview-download-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+    background: transparent;
+}
+
+/* === 10.6 YOUTUBE INPUT === */
+.post-form-link {
+  background: transparent;
+    border: 1px solid var(--post-overlay-color, var(--sys-fg));
+  border-radius: 2px;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: var(--post-input-size);
+  font-style: italic;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  padding: 8px 10px;
+  min-width: 0;
+    transition: none;
+}
+
+.post-form-link::placeholder {
+    color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 65%, transparent);
+    font-style: italic;
+}
+
+.post-form-title,
+.post-form-title::placeholder,
+.post-form-category-display,
+.post-form-category-display .is-placeholder,
+.post-form-category-chevron,
+.post-form-category-input,
+.post-form-category-input::placeholder,
+.post-form-text,
+.post-form-text:empty::before,
+.post-form-link,
+.post-form-link::placeholder,
+.post-form-file-label {
+    color: var(--post-overlay-color, var(--sys-fg));
+}
+
+.post-form-title::placeholder,
+.post-form-category-display .is-placeholder,
+.post-form-category-input::placeholder,
+.post-form-text:empty::before,
+.post-form-link::placeholder {
+    color: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 65%, transparent);
+    font-style: italic;
+}
+
+.post-external-link {
+    display: inline;
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1.1px;
+    text-underline-offset: 0.15em;
+    transition: opacity 0.15s ease;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    word-break: break-word;
+}
+
+a.post-external-link:hover {
+    opacity: 0.8;
+}
+
+.post-body.post-body-external-link {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+@media (max-width: 760px) {
+    .post-form-overlay {
+        padding: 0;
+    }
+
+    .post-form-asset-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* === 10.7 POST FORM BUTTONS === */
+.post-form-buttons {
+    display: flex;
+    gap: clamp(10px, 2vw, 40px);
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.post-form-buttons button {
+    background: transparent;
+    border: none;
+    color: var(--post-overlay-color, var(--sys-fg));
+    font-size: clamp(1.55rem, 3.2vw, 3.6rem);
+    font-family: inherit;
+    cursor: pointer;
+    transition: text-decoration-color 0.2s ease, transform 0.1s ease, color 0.2s ease;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0px;
+    text-decoration-color: transparent;
+    min-height: 0;
+    height: auto;
+    min-width: 0;
+    padding: 0;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-form-buttons button:hover {
+    color: var(--post-overlay-color, var(--sys-fg));
+    text-decoration-color: currentColor;
+}
+
+.post-form-buttons button:active {
+    transform: scale(0.98);
+}
+
+/* ============================================ */
+/* 11.0 POST CARDS                             */
+/* ============================================ */
+
+.post-card:not(.world-card) {
+    --edit-post-outline-pad: 20px;
+    --post-card-space: 14px;
+    --post-text-card-pad: 22px;
+    --post-scale: 1;
+    --post-card-surface: var(--post-overlay-bg, var(--sys-fg));
+    --post-card-ink: var(--post-overlay-color, var(--sys-bg));
+    --post-card-ink-muted: color-mix(in srgb, var(--post-card-ink) 70%, transparent);
+    --post-card-line-soft: color-mix(in srgb, var(--post-card-line) 48%, transparent);
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+    min-height: 120px;
+    max-width: 600px;
+    overflow: visible; /* allow title to bleed past card edges */
+    transform: scale(var(--post-scale));
+    transform-origin: top left;
+    background: var(--post-card-surface);
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    box-shadow: inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft);
+    font-family: var(--post-overlay-font, var(--sys-font, inherit));
+    backface-visibility: hidden;
+}
+
+.post-lod-badge {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    display: none;
+    padding: 6px 8px;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.34);
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+}
+
+.post-card[data-lod="mid"] .post-card-content,
+.post-card[data-lod="mid"] .post-footer {
+    opacity: 0.82;
+}
+
+.post-card[data-lod="far"] .post-card-content,
+.post-card[data-lod="far"] .post-footer {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.post-card[data-lod="far"] .post-lod-badge {
+    display: block;
+}
+
+.main-page-container.zoomed-out-intentional .post-card[data-lod="mid"] .post-card-content,
+.main-page-container.zoomed-out-intentional .post-card[data-lod="mid"] .post-footer {
+    filter: blur(0.55px) saturate(0.9);
+}
+
+.main-page-container.zoomed-out-intentional .post-card[data-lod="far"] .post-lod-badge {
+    filter: blur(0.35px);
+}
+
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom:not(.world-card):not(.post-card-has-visual) {
+    overflow: hidden;
+    filter: blur(8px) saturate(110%);
+    -webkit-filter: blur(8px) saturate(110%);
+}
+
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom:not(.world-card):not(.post-card-has-visual) .post-card-content,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom:not(.world-card):not(.post-card-has-visual) .post-footer,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom:not(.world-card):not(.post-card-has-visual) .post-lod-badge,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom:not(.world-card):not(.post-card-has-visual) .post-title-wrap,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom:not(.world-card):not(.post-card-has-visual) .post-edit-button,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom:not(.world-card):not(.post-card-has-visual) .post-resize-handle {
+    opacity: 1 !important;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom.post-card-has-visual:not(.post-card-nonvisual-no-cover):not(.post-card-nonvisual-cover) .post-visual-meta-shell {
+    filter: blur(8px) saturate(110%);
+    -webkit-filter: blur(8px) saturate(110%);
+}
+
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom.post-card-has-visual:not(.post-card-nonvisual-no-cover):not(.post-card-nonvisual-cover) .post-visual-meta-shell .post-card-content,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom.post-card-has-visual:not(.post-card-nonvisual-no-cover):not(.post-card-nonvisual-cover) .post-visual-meta-shell .post-footer,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom.post-card-has-visual:not(.post-card-nonvisual-no-cover):not(.post-card-nonvisual-cover) .post-visual-meta-shell .post-lod-badge,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom.post-card-has-visual:not(.post-card-nonvisual-no-cover):not(.post-card-nonvisual-cover) .post-visual-meta-shell .post-title-wrap,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom.post-card-has-visual:not(.post-card-nonvisual-no-cover):not(.post-card-nonvisual-cover) .post-visual-meta-shell .post-edit-button,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-on-zoom.post-card-has-visual:not(.post-card-nonvisual-no-cover):not(.post-card-nonvisual-cover) .post-visual-meta-shell .post-resize-handle {
+    opacity: 1 !important;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-media-on-zoom .post-visual-column .post-image,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-media-on-zoom .post-visual-column .post-file-preview,
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-media-on-zoom .post-visual-column .post-file-preview * {
+    opacity: 1 !important;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.main-page-container.ultra-zoomed-out .post-card.post-card-blackout-media-on-zoom:not(.post-card-nonvisual-no-cover):not(.post-card-nonvisual-cover) .post-visual-column {
+    filter: blur(8px) saturate(110%);
+    -webkit-filter: blur(8px) saturate(110%);
+}
+
+.main-page-container.ultra-zoomed-out .post-card.post-card-nonvisual-no-cover,
+.main-page-container.ultra-zoomed-out .post-card.post-card-nonvisual-cover {
+    overflow: hidden;
+    filter: blur(8px) saturate(110%);
+    -webkit-filter: blur(8px) saturate(110%);
+}
+
+.post-resize-tab {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 8;
+    transition: opacity 0.14s ease;
+}
+
+.post-resize-tab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--post-overlay-color, var(--sys-fg)) 88%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--post-overlay-bg, var(--sys-bg)) 48%, transparent);
+    opacity: 0.9;
+}
+
+.post-resize-tab::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--post-overlay-bg, var(--sys-bg)) 92%, transparent);
+}
+
+.post-resize-tab-nw { top: -9px; left: -9px; cursor: nwse-resize; }
+.post-resize-tab-ne { top: -9px; right: -9px; cursor: nesw-resize; }
+.post-resize-tab-sw { bottom: -9px; left: -9px; cursor: nesw-resize; }
+.post-resize-tab-se { bottom: -9px; right: -9px; cursor: nwse-resize; }
+
+.main-page-container.edit-mode .post-card:hover .post-resize-tab,
+.main-page-container.edit-mode .post-card.post-card-resizing .post-resize-tab {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* === 11.1 POST CARD CONTENT === */
+.post-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: visible; /* allow title to bleed */
+    text-align: left;
+    padding: var(--post-card-space);
+    gap: var(--post-card-space);
+    box-sizing: border-box;
+}
+
+.post-card-content.post-layout-text,
+.post-card-content.post-layout-title,
+.post-card-content.post-layout-title-text,
+.post-card-content.post-layout-title-visual,
+.post-card-content.post-layout-visual-text,
+.post-card-content.post-layout-title-visual-text {
+    padding: var(--post-text-card-pad);
+}
+
+.post-card-content > * {
+    max-width: 100%;
+}
+
+/* ============================================ */
+/* 11.2 POST TITLE                             */
+/* ============================================ */
+
+/* Same size/weight as login-signup input text */
+.post-title {
+    font-size: var(--post-title-size);
+    color: var(--post-card-ink);
+    line-height: 1.2;
+    font-family: inherit;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+        white-space: normal;
+    overflow: hidden;
+        text-overflow: clip;
+        position: relative;
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+    -webkit-mask-image: none;
+    mask-image: none;
+    margin-bottom: 0;
+    text-shadow: none;
+        text-align: left;
+}
+
+.post-fileline-track {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+    text-decoration: inherit;
+}
+
+.post-filelist-track {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+    text-decoration: inherit;
+}
+
+.post-fileline.is-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+
+/* ============================================ */
+/* 11.3 POST BODY                              */
+/* ============================================ */
+
+/* Half the size of title */
+.post-body {
+    font-size: var(--post-body-size);
+    color: var(--post-card-ink);
+    line-height: 1.5;
+    font-family: inherit;
+    text-align: left;
+    scrollbar-gutter: stable both-edges;
+    overscroll-behavior: contain;
+    overflow-anchor: none;
+    backface-visibility: hidden;
+}
+
+.post-task-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45em;
+}
+
+.post-task-box {
+    flex: 0 0 auto;
+    line-height: 1.5;
+}
+
+.post-task-text {
+    min-width: 0;
+}
+
+/* ============================================ */
+/* 11.4 POST IMAGE                             */
+/* ============================================ */
+
+.post-image {
+    display: block;
+    max-width: 100%;
+}
+
+/* ============================================ */
+/* 11.5 POST LAYOUT VARIANTS                   */
+/* ============================================ */
+
+/* --- TITLE ONLY --- */
+/* Single line, tweet-like */
+.post-layout-title .post-title {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.post-card.post-card-title-only {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 680px;
+}
+
+.post-card.post-card-title-only .post-card-content,
+.post-layout-title,
+.post-layout-title-text {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 680px;
+}
+
+.post-card.post-card-title-only .post-footer,
+.post-layout-title + .post-footer {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+}
+
+.post-layout-text,
+.post-layout-title-text,
+.post-layout-visual-text,
+.post-layout-title-visual-text {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 680px;
+    --post-text-start-gap: var(--post-text-card-pad);
+    gap: 0;
+}
+
+.post-layout-text + .post-footer,
+.post-layout-title-text + .post-footer,
+.post-layout-visual-text + .post-footer,
+.post-layout-title-visual-text + .post-footer {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin-top: calc(var(--post-card-stroke-w) * -1);
+}
+
+/* --- TEXT ONLY --- */
+.post-layout-text .post-body,
+.post-layout-visual-text .post-body {
+    margin: 0;
+    margin-top: -0.3em;
+    padding-top: 0;
+    padding-bottom: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    scrollbar-gutter: stable both-edges;
+    overscroll-behavior: contain;
+}
+
+/* --- TITLE + TEXT --- */
+.post-layout-title-text .post-title,
+.post-layout-title-visual-text .post-title {
+    margin-bottom: 0;
+    padding-bottom: 8px;
+    display: block;
+    width: 100%;
+    align-self: stretch;
+    box-sizing: border-box;
+}
+
+.post-layout-title-text .post-title-wrap,
+.post-layout-title-visual-text .post-title-wrap {
+    display: block;
+    align-self: stretch;
+    margin-left: calc(var(--post-text-card-pad) * -1);
+    margin-right: calc(var(--post-text-card-pad) * -1);
+    padding-left: var(--post-text-card-pad);
+    padding-right: var(--post-text-card-pad);
+    max-width: none;
+    box-sizing: border-box;
+    border-bottom: var(--post-card-stroke-w) solid var(--post-card-line);
+}
+
+.post-layout-text .post-body > *:last-child,
+.post-layout-title-text .post-body > *:last-child,
+.post-layout-visual-text .post-body > *:last-child,
+.post-layout-title-visual-text .post-body > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+.post-layout-text .post-body > div:last-child:has(> br:only-child),
+.post-layout-title-text .post-body > div:last-child:has(> br:only-child),
+.post-layout-visual-text .post-body > div:last-child:has(> br:only-child),
+.post-layout-title-visual-text .post-body > div:last-child:has(> br:only-child),
+.post-layout-text .post-body > p:last-child:has(> br:only-child),
+.post-layout-title-text .post-body > p:last-child:has(> br:only-child),
+.post-layout-visual-text .post-body > p:last-child:has(> br:only-child),
+.post-layout-title-visual-text .post-body > p:last-child:has(> br:only-child) {
+    display: none;
+}
+
+.post-layout-title-text .post-body,
+.post-layout-title-visual-text .post-body {
+    margin: 0;
+    padding-top: var(--post-text-start-gap);
+    padding-bottom: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    scrollbar-gutter: stable both-edges;
+    overscroll-behavior: contain;
+}
+
+/* --- VISUAL ONLY --- */
+.post-layout-visual .post-image {
+    width: auto;
+    max-width: 400px;
+    max-height: 400px;
+    display: block;
+    object-fit: unset; /* override the global width:100% / object-fit:cover */
+}
+
+/* --- TITLE + VISUAL --- */
+/* --- TITLE + VISUAL + TEXT --- */
+
+/* short text = stacked */
+.post-visual-text-row {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.post-visual-text-row .post-body,
+.post-visual-text-row .post-image,
+.post-visual-text-row .post-file-preview {
+    width: 300px;
+    max-width: 100%;
+}
+
+.post-visual-text-row .post-image,
+.post-visual-text-row .post-file-preview {
+    height: 300px;
+    flex-shrink: 0;
+}
+
+.post-visual-text-row .post-image {
+    height: auto;       /* let the full image show — don't clip to 300px box */
+    max-height: 400px;  /* still prevent enormous PNGs from overwhelming the card */
+    object-fit: cover; /* restore cover for the side-by-side panel */
+    display: block;
+}
+
+.post-visual-text-row .post-body {
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* long text = side by side */
+.post-layout-title-visual-text.is-long-text .post-visual-text-row {
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.post-layout-title-visual-text.is-long-text .post-visual-text-row .post-body {
+    position: relative;
+    height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 0;
+    padding-right: 12px;
+    line-height: 1.5;
+    margin-top: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+/* long text, no file: same overall width as 300 + 12 + 300 */
+.post-layout-title-text.is-long-text .post-body,
+.post-layout-title-visual-text.is-long-text .post-body,
+.post-layout-visual-text.is-long-text .post-body {
+    width: min(680px, 100%);
+    max-width: 100%;
+    height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    line-height: 1.5;
+    padding-top: var(--post-text-start-gap);
+    padding-right: 12px;
+    margin-top: 0;
+
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+/* Text-only long: contained scrollable box */
+.post-layout-text.is-long-text,
+.post-layout-visual-text.is-long-text {
+    width: min(680px, 100%);
+    min-width: 300px;
+    max-width: 680px;
+}
+.post-layout-text.is-long-text + .post-footer {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+}
+.post-layout-text.is-long-text .post-body,
+.post-layout-visual-text.is-long-text .post-body {
+    margin: 0;
+    margin-top: -0.3em;
+    width: min(680px, 100%);
+    max-width: 100%;
+    height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    scrollbar-gutter: stable both-edges;
+    overscroll-behavior: contain;
+    line-height: 1.5;
+    padding-top: 0;
+    padding-right: 12px;
+    padding-bottom: 0;
+    margin-top: -0.3em;
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+/* Visual+text long (no title): side by side */
+.post-layout-visual-text.is-long-text .post-visual-text-row .post-image,
+.post-layout-visual-text.is-long-text .post-visual-text-row .post-file-preview,
+.post-layout-title-visual-text.is-long-text .post-visual-text-row .post-image,
+.post-layout-title-visual-text.is-long-text .post-visual-text-row .post-file-preview {
+    height: 300px;
+    flex-shrink: 0;
+    object-fit: cover; /* restore cover for the side-by-side panel */
+}
+
+
+
+/* Natural video card shrinks to actual rendered video width */
+.post-card-natural-video {
+    width: 300px; /* JS overrides this once video metadata loads */
+    max-width: 300px;
+}
+
+/* Override the generic 300px fixed width that post-layout-visual sets */
+.post-card-natural-video .post-layout-visual {
+    width: auto;
+}
+
+/* Content and footer must stay inside the JS-measured card width */
+.post-card-natural-video .post-layout-visual-natural {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.post-card-natural-video .post-card-content {
+    padding: 0 0 var(--post-card-space) 0;
+    gap: 0;
+}
+
+/* Content and footer must stay inside the JS-measured card width;
+   prevent pfp and category from overflowing narrow portrait videos */
+.post-card-natural-video .post-footer {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden;
+  gap: 4px;
+}
+.post-card-natural-video .post-footer-pfp {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.post-card-natural-video .post-footer-username {
+    min-width: 0;
+}
+
+.post-title-track {
+    display: inline;
+    min-width: 0;
+    white-space: inherit;
+    will-change: auto;
+}
+
+/* ─── LOD + animation-mode marquee pausing ────────────────────────── */
+/* far cards always stop, regardless of user animation setting */
+.post-card[data-lod="far"] .post-title-track,
+.post-card[data-lod="far"] .post-fileline-track,
+.post-card[data-lod="far"] .post-filelist-track,
+.post-card[data-lod="far"] .post-footer-username-track {
+    animation-play-state: paused !important;
+}
+
+/* reduced mode — mid cards also paused */
+body.anim-reduced .post-card[data-lod="mid"] .post-title-track,
+body.anim-reduced .post-card[data-lod="mid"] .post-fileline-track,
+body.anim-reduced .post-card[data-lod="mid"] .post-filelist-track,
+body.anim-reduced .post-card[data-lod="mid"] .post-footer-username-track {
+    animation-play-state: paused !important;
+}
+
+/* off mode — all card marquees paused */
+body.anim-off .post-card .post-title-track,
+body.anim-off .post-card .post-fileline-track,
+body.anim-off .post-card .post-filelist-track,
+body.anim-off .post-card .post-footer-username-track {
+    animation-play-state: paused !important;
+}
+
+/* hard freeze: no motion at all while freeze mode is active */
+body.anim-hard-freeze *,
+body.anim-hard-freeze *::before,
+body.anim-hard-freeze *::after {
+    animation: none !important;
+    transition: none !important;
+}
+
+.post-layout-title-visual-text.is-long-text .post-visual-text-row .post-body,
+.post-layout-visual-text.is-long-text .post-visual-text-row .post-body,
+.post-layout-title-text.is-long-text .post-body {
+    text-align: left;
+}
+
+/* ============================================ */
+/* 11.6 FILE PREVIEW TILES                      */
+/* ============================================ */
+
+/* Base tile */
+.post-file-preview {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  max-width: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+
+}
+
+.post-file-preview.has-cover,
+.post-file-preview-youtube.has-cover {
+    border: none;
+}
+
+.post-file-preview.post-file-preview-cover-natural {
+    width: auto;
+    height: auto;
+    max-width: min(640px, 100%);
+    max-height: 420px;
+    background: transparent;
+    box-shadow: none;
+}
+
+.post-file-preview.post-file-preview-cover-natural .post-file-preview-cover {
+    position: static;
+    inset: auto;
+    width: auto;
+    height: auto;
+    max-width: min(640px, 100%);
+    max-height: 420px;
+    object-fit: contain;
+}
+
+/* Cover image fills the tile */
+.post-file-preview-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+        object-fit: cover;
+    display: block;
+    -webkit-mask-image: none;
+    mask-image: none;
+    z-index: 1;
+}
+
+.post-file-preview-label {
+    position: absolute;
+    inset: auto 0 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  font-size: clamp(2.2rem, 6.2vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+    color: var(--post-card-ink-muted);
+  background: transparent;
+  border-radius: 0;
+  pointer-events: none;
+  user-select: none;
+    opacity: 1;
+  transition: opacity 0.18s ease;
+  z-index: 3;
+}
+
+.post-file-preview-audio .post-file-preview-label,
+.post-file-preview-download .post-file-preview-label {
+  display: none;
+}
+
+/* File name badge stays visible for non-visual tiles */
+.post-file-preview-filename {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: clamp(0.82rem, 0.76rem + 0.2vw, 0.96rem);
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--post-card-ink-muted);
+    border: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    user-select: none;
+    z-index: 2;
+}
+
+.post-file-preview-icon {
+    position: absolute;
+    inset: auto auto var(--post-card-space) var(--post-card-space);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--post-card-ink);
+    font-size: clamp(3.4rem, 9vw, 5.4rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.18s ease;
+    z-index: 1;
+}
+
+.post-file-preview-icon.is-audio,
+.post-file-preview-icon.is-files {
+    font-size: clamp(4.1rem, 10.8vw, 6.4rem);
+}
+
+.post-file-preview-icon.is-code {
+    font-size: clamp(3.6rem, 9.5vw, 5.8rem);
+}
+
+.post-file-name-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+    padding: var(--post-card-space);
+    min-height: calc(44px + (var(--post-card-space) * 2));
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    background: var(--post-card-surface);
+    box-shadow: inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft);
+    box-sizing: border-box;
+    font-size: var(--post-footer-size);
+    color: var(--post-card-ink-muted) !important;
+    font-family: inherit;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
+.post-card .post-file-name-box {
+    margin-bottom: 0;
+}
+
+.post-file-name-track {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: inherit;
+}
+
+.post-file-name-box,
+.post-file-name-box .post-file-name-track {
+    color: var(--post-card-ink-muted) !important;
+}
+
+.post-card-content + .post-file-name-box,
+.post-file-name-box + .post-footer {
+    margin-top: calc(var(--post-card-stroke-w) * -1);
+}
+
+.post-card.post-card-has-visual .post-visual-meta-shell > .post-file-name-box {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin-bottom: 0;
+}
+
+.post-card.post-card-has-visual .post-visual-meta-shell > .post-card-content,
+.post-card.post-card-has-visual .post-visual-meta-shell > .post-footer {
+    background: var(--post-card-surface);
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    box-shadow: inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft);
+}
+
+.post-card.post-card-has-visual .post-visual-meta-shell > .post-footer {
+    border-top: var(--post-card-stroke-w) solid var(--post-card-line);
+}
+
+.post-card.post-card-nonvisual-no-cover {
+    --mixed-visual-col-w: 300px;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-card-content.post-layout-visual {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-card-content.post-layout-visual .post-file-preview {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+    aspect-ratio: 1 / 1;
+}
+
+/* ---- Shared action button base ---- */
+.post-file-preview-play,
+.post-file-preview-download-btn,
+.post-preview-mute-btn,
+.post-file-preview-youtube-activate {
+  position: absolute;
+    top: auto;
+    right: auto;
+    bottom: var(--post-card-space);
+    left: var(--post-card-space);
+    transform: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+    background: var(--post-card-surface);
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    color: var(--post-card-ink);
+  font: inherit;
+    font-size: clamp(1.45rem, 4.8vw, 2.15rem);
+    line-height: 1;
+  cursor: pointer;
+    padding: 0;
+    width: clamp(44px, 13vw, 56px);
+    height: clamp(44px, 13vw, 56px);
+    border-radius: 2px;
+  text-decoration: none;
+  pointer-events: auto;
+  z-index: 3;
+    box-shadow:
+        inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft),
+        0 0 0 var(--post-card-stroke-w) color-mix(in srgb, var(--post-card-surface) 28%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-preview-mute-btn {
+    font-size: clamp(1.35rem, 4.2vw, 2rem);
+}
+
+.post-file-preview-download-btn.is-display-only {
+    pointer-events: none;
+}
+
+.post-file-preview-download-btn:disabled {
+    opacity: 0.78;
+    cursor: progress;
+    pointer-events: none;
+}
+
+.post-file-preview-download-gif {
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    background: color-mix(in srgb, var(--post-card-surface) 6%, transparent);
+    box-shadow: none;
+}
+
+/* ---- Hover reveals ---- */
+.post-file-preview-audio:hover .post-file-preview-play {
+  opacity: 1;
+}
+
+.post-file-preview-download:hover .post-file-preview-download-btn {
+  opacity: 1;
+}
+
+/* Video: mute button appears on hover, label fades (matches download behavior) */
+.post-file-preview-video:hover .post-preview-mute-btn {
+  opacity: 1;
+}
+
+.post-file-preview-audio:hover .post-file-preview-icon,
+.post-file-preview-download:hover .post-file-preview-icon {
+    opacity: 0;
+}
+
+.post-file-preview-video:hover .post-file-preview-label {
+  opacity: 0;
+}
+
+.post-file-preview-video .post-preview-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.post-file-preview-audio:not(.has-cover),
+.post-file-preview-download:not(.has-cover),
+.post-file-preview-video {
+    background: var(--post-card-surface);
+}
+
+/* YouTube: poster brightens on hover (matches download.has-cover behavior) */
+.post-file-preview-youtube-shell:hover .post-file-preview-cover {
+  opacity: 1;
+  filter: brightness(1.18) saturate(1.1);
+}
+
+.post-file-preview-youtube-shell:hover .post-file-preview-youtube-activate,
+.pd-youtube-shell:hover .pd-youtube-activate {
+  opacity: 1;
+}
+
+/* Stronger readability only when a cover image sits behind controls */
+.post-file-preview.has-cover .post-file-preview-filename {
+    color: var(--post-card-ink-muted);
+    background: color-mix(in srgb, var(--post-card-surface) 36%, transparent);
+    display: none;
+}
+
+.post-file-preview-audio.has-cover .post-file-preview-play,
+.post-file-preview-download.has-cover .post-file-preview-download-btn {
+    right: auto;
+    bottom: var(--post-card-space);
+    top: auto;
+    left: var(--post-card-space);
+    transform: none;
+    width: clamp(44px, 13vw, 56px);
+    height: clamp(44px, 13vw, 56px);
+    min-width: 0;
+    padding: 0;
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    background: var(--post-card-surface);
+    box-shadow:
+        inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft),
+        0 0 0 var(--post-card-stroke-w) color-mix(in srgb, var(--post-card-surface) 28%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--post-card-ink);
+    font-size: clamp(1.45rem, 4.8vw, 2.15rem);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Solo video natural aspect ratio, no fixed box */
+.post-file-preview-video.post-file-preview-video-natural {
+  width: auto;
+  height: auto;
+  max-width: 300px;
+  max-height: 400px;
+  border: none;
+  background: transparent;
+}
+
+/* width: auto lets the video use its intrinsic aspect ratio */
+.post-file-preview-video.post-file-preview-video-natural .post-preview-video {
+  width: auto;
+  height: auto;
+  max-width: 300px;
+  max-height: 400px;
+  object-fit: unset;
+  display: block;
+}
+
+/* ---- Audio with cover image ---- */
+
+/* Reveal play button on hover when a cover image is present */
+.post-file-preview-audio.has-cover:hover .post-file-preview-play {
+  opacity: 1;
+}
+
+/* === YOUTUBE CARD PREVIEW === */
+.post-file-preview-youtube {
+  position: relative;
+  overflow: hidden;
+        background: #0d1110;
+        border: none;
+}
+
+.post-file-preview-youtube-shell.has-cover {
+    background: transparent;
+}
+
+.post-file-preview-youtube-shell,
+.pd-youtube-shell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(165deg, rgba(24, 30, 28, 0.95), rgba(8, 10, 9, 0.95));
+}
+
+.post-file-preview-youtube-player,
+.post-file-preview-youtube .post-file-preview-cover,
+.pd-youtube-shell .post-file-preview-cover {
+  width: 100%;
+  height: 100%;
+    object-fit: cover;
+  display: block;
+}
+
+.post-file-preview-youtube-shell .post-file-preview-cover,
+.pd-youtube-shell .post-file-preview-cover {
+    filter: saturate(0.9) contrast(1.02) brightness(1.0);
+}
+
+.post-file-preview-youtube-shell::after,
+.pd-youtube-shell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(9, 12, 11, 0.0) 0%, rgba(9, 12, 11, 0.38) 74%),
+        linear-gradient(to bottom, rgba(7, 10, 9, 0.05), rgba(7, 10, 9, 0.28));
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    opacity: 1;
+}
+
+.post-file-preview-youtube-shell:hover::after,
+.pd-youtube-shell:hover::after {
+    opacity: 0.5;
+}
+
+.pd-youtube-activate {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  background: transparent;
+  border: none;
+  color: rgba(0, 0, 0, 0.88);
+  font: inherit;
+  font-size: clamp(4.6rem, 13vw, 7.1rem);
+  line-height: 0.9;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  pointer-events: auto;
+  z-index: 3;
+}
+
+.post-file-preview-youtube-activate-icon,
+.pd-youtube-activate-icon {
+    pointer-events: none;
+}
+
+/* === YOUTUBE DETAIL MODAL EMBED === */
+.pd-visual-youtube {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  display: block;
+}
+
+.pd-youtube-shell {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+/* ============================================ */
+/* 11.7 TITLE HIERARCHY                         */
+/* ============================================ */
+
+/* lightweight/header-style titles only */
+/* big lightweight titles only */
+.post-layout-title .post-title,
+.post-layout-title-text:not(.is-long-text) .post-title {
+    font-size: calc(var(--post-title-size) * 1.45);
+    line-height: 1.08;
+}
+
+/* any title with a file stays smaller */
+.post-layout-title-visual .post-title,
+.post-layout-title-visual-text .post-title {
+    font-size: var(--post-title-size);
+    line-height: 1.2;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-layout-title-visual .post-title,
+.post-card.post-card-nonvisual-cover .post-layout-title-visual .post-title {
+    font-size: calc(var(--post-title-size) * 1.45);
+    line-height: 1.08;
+}
+
+/* long titles stay modest */
+.post-title.is-long-title {
+    font-size: var(--post-title-size);
+    line-height: 1.2;
+}
+
+/* any long-text card gets normal title size */
+.post-layout-title-text.is-long-text .post-title,
+.post-layout-title-text.is-long-text .post-title.is-long-title,
+.post-layout-title-visual-text.is-long-text .post-title,
+.post-layout-title-visual-text.is-long-text .post-title.is-long-title {
+    font-size: var(--post-title-size);
+    line-height: 1.2;
+}
+
+/* ============================================ */
+/* 11.8 POST FOOTER                            */
+/* ============================================ */
+
+.post-layout-title-visual,
+.post-layout-visual {
+    width: 300px;
+}
+
+.post-layout-title-visual + .post-footer,
+.post-layout-visual + .post-footer {
+    width: 300px;
+}
+
+.post-layout-title-text.is-long-text {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 680px;
+}
+
+.post-layout-title-text.is-long-text + .post-footer {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+}
+
+.post-layout-title .post-title,
+.post-layout-title-text .post-title {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+}
+
+.post-footer {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    column-gap: var(--post-card-space);
+    row-gap: 0;
+    align-items: center;
+    padding: var(--post-card-space);
+    border-top: var(--post-card-stroke-w) solid var(--post-card-line);
+    box-sizing: border-box;
+}
+
+.post-footer-pfp {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    flex-shrink: 0;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+img[data-default-avatar="1"] {
+    background: currentColor;
+    color: inherit;
+    object-fit: contain;
+    -webkit-mask: url('../toolbaricons/toolbaricons_profile_filled.svg') center / contain no-repeat;
+    mask: url('../toolbaricons/toolbaricons_profile_filled.svg') center / contain no-repeat;
+}
+
+.post-footer-username {
+    font-size: var(--post-footer-size);
+    color: var(--post-card-ink-muted);
+    font-family: inherit;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.post-footer-username-track {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+}
+
+.post-footer-username.is-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+.post-footer-username.is-marquee .post-footer-username-track {
+    animation: post-username-marquee 10s linear infinite;
+}
+
+@keyframes post-username-marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(var(--marquee-end-pct, -50%)); }
+}
+
+/* Pause all marquees when zoomed out — prevents subpixel shaking on scaled-down canvas */
+.main-page-container.zoomed-out-intentional .post-card .post-title-track,
+.main-page-container.zoomed-out-intentional .post-card .post-fileline-track,
+.main-page-container.zoomed-out-intentional .post-card .post-filelist-track,
+.main-page-container.zoomed-out-intentional .post-card .post-footer-username-track {
+    animation-play-state: paused !important;
+}
+
+/* ============================================ */
+/* 12.0 COVER IMAGE PROMPT                     */
+/* ============================================ */
+
+.cover-image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.cover-image-prompt {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 400px;
+}
+
+.cover-image-prompt-text {
+    font-size: var(--font-size-lg);
+    color: rgba(255, 255, 255, 0.8);
+    font-family: inherit;
+}
+
+.cover-image-file-label {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5);
+    font-size: var(--font-size-md);
+    font-family: inherit;
+    cursor: pointer;
+    padding: 5px 0;
+}
+
+.cover-image-file-label:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.cover-image-file-label input[type="file"] {
+    display: none;
+}
+
+.cover-image-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+}
+
+.cover-image-buttons button {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: var(--font-size-lg);
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s ease, text-shadow 0.2s ease;
+    opacity: 0.7;
+    padding: 0;
+}
+
+.cover-image-buttons button:hover {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Safety net: never show extension label on video tiles */
+.post-file-preview-video .post-file-preview-label {
+  display: none;
+}
+
+/* ============================================ */
+/* 13.0 EDIT MODE                              */
+/* ============================================ */
+
+/* Edit mode indicator - subtle border so you know you're in edit mode */
+.main-page-container.edit-mode {
+    /* resolve once so all outline tints share the same base colour */
+    --edit-c: var(--post-overlay-color, var(--sys-fg));
+    outline: 1px solid color-mix(in srgb, var(--edit-c) 34%, transparent);
+    outline-offset: -2px;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--edit-c) 14%, transparent);
+}
+
+.main-page-container.edit-mode .post-card {
+    box-shadow: none;
+}
+
+.main-page-container.edit-mode .post-card.post-card-selected {
+    outline: 2px solid var(--post-overlay-color, var(--sys-fg));
+    outline-offset: 4px;
+}
+
+.main-page-container.edit-mode .post-card.post-card-selected .post-edit-button-edit {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.main-page-container.edit-mode .post-card .post-footer-pfp,
+.main-page-container.edit-mode .post-card .post-footer-username,
+.main-page-container.edit-mode .post-card a.post-external-link,
+.main-page-container.edit-mode .post-card .mention-token-link,
+.main-page-container.edit-mode .post-card .post-file-preview,
+.main-page-container.edit-mode .post-card .post-file-preview *,
+.main-page-container.edit-mode .post-card .post-file-preview-play,
+.main-page-container.edit-mode .post-card .post-file-preview-download-btn,
+.main-page-container.edit-mode .post-card .post-preview-mute-btn,
+.main-page-container.edit-mode .post-card .post-file-preview-youtube-activate {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+.main-page-container.edit-mode .post-card .post-title-track,
+.main-page-container.edit-mode .post-card .post-fileline-track,
+.main-page-container.edit-mode .post-card .post-filelist-track,
+.main-page-container.edit-mode .post-card .post-footer-username-track {
+    animation: none !important;
+    transform: none !important;
+}
+
+.main-page-container.edit-mode .post-card::after {
+    content: none;
+}
+
+.main-page-container.edit-mode .post-card::before {
+    content: none;
+}
+
+.post-edit-chrome {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+    overflow: visible;
+}
+
+.post-edit-top-actions {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 12px);
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.post-edit-button {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--post-overlay-bg, var(--sys-bg));
+    background: var(--post-overlay-color, var(--sys-fg));
+    color: var(--post-overlay-bg, var(--sys-bg));
+    border-radius: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI Symbol', 'Segoe UI', sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    text-shadow: none;
+}
+
+.post-edit-button:hover {
+    background: var(--post-overlay-bg, var(--sys-bg));
+    border-color: var(--post-overlay-bg, var(--sys-bg));
+    color: var(--post-overlay-color, var(--sys-fg));
+    transform: translateY(-1px);
+    box-shadow: none;
+}
+
+.post-edit-button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.post-edit-button:focus-visible {
+    outline: 2px solid var(--sys-bg);
+    outline-offset: 2px;
+}
+
+.post-edit-button.active {
+    background: var(--post-overlay-bg, var(--sys-bg));
+    color: var(--post-overlay-color, var(--sys-fg));
+    border-color: var(--post-overlay-bg, var(--sys-bg));
+    text-shadow: none;
+}
+
+.post-edit-button:disabled {
+    opacity: 0.55;
+    cursor: wait;
+    pointer-events: none;
+}
+
+.post-edit-button-delete {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 112px;
+    transform: none;
+}
+
+
+.main-page-container.edit-mode .post-card .post-edit-button:hover {
+    transform: none;
+}
+
+/* Visual-media cards: split into equal columns (plain visual left, metadata card right). */
+.post-card.post-card-has-visual.post-card-visual-row,
+.post-card.post-card-has-visual.post-card-visual-stack {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.post-card.post-card-visual-standalone {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.post-card.post-card-visual-standalone .post-card-content {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    gap: 0;
+}
+
+.post-card.post-card-visual-standalone .post-card-content.post-layout-visual {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+}
+
+.post-card.post-card-visual-standalone .post-footer {
+    background: var(--post-card-surface);
+    border-top: var(--post-card-stroke-w) solid var(--post-card-line);
+    border-left: var(--post-card-stroke-w) solid var(--post-card-line);
+    border-right: var(--post-card-stroke-w) solid var(--post-card-line);
+    border-bottom: var(--post-card-stroke-w) solid var(--post-card-line);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    justify-self: stretch;
+    align-self: stretch;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.post-card.post-card-has-visual .post-visual-split {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: var(--post-card-space);
+    align-items: start;
+}
+
+.post-card.post-card-has-visual.post-card-visual-stack .post-visual-split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--post-card-space);
+}
+
+.post-card.post-card-has-visual .post-visual-column {
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.post-card.post-card-has-visual .post-visual-column .post-image,
+.post-card.post-card-has-visual .post-visual-column .post-file-preview {
+    width: auto;
+    max-width: min(640px, 100%);
+    max-height: 420px;
+    margin: 0;
+}
+
+.post-card.post-card-has-visual .post-visual-column .post-image {
+    height: auto;
+    object-fit: cover;
+}
+
+.post-card.post-card-has-visual .post-visual-column .post-file-preview {
+    height: auto;
+    aspect-ratio: auto;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+.post-card.post-card-has-visual .post-visual-meta-shell {
+    position: relative;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    justify-self: start;
+    width: fit-content;
+    min-width: 260px;
+    max-width: 680px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    gap: 0;
+}
+
+.post-card.post-card-visual-row:not(.post-card-visual-with-text) .post-visual-split {
+    align-items: start;
+}
+
+.post-card.post-card-visual-row:not(.post-card-visual-with-text) .post-visual-meta-shell {
+    height: var(--post-visual-media-h, auto);
+    min-height: var(--post-visual-media-h, auto);
+}
+
+.post-card.post-card-visual-row:not(.post-card-visual-with-text) .post-visual-meta-shell > .post-card-content {
+    flex: 1 1 auto;
+}
+
+.post-card.post-card-visual-row:not(.post-card-visual-with-text) .post-visual-meta-shell > .post-footer {
+    margin-top: auto;
+}
+
+.post-card.post-card-visual-image-match-height .post-visual-split {
+    align-items: stretch;
+}
+
+.post-card.post-card-visual-with-text .post-visual-split {
+    align-items: stretch;
+}
+
+.post-card.post-card-visual-with-text .post-visual-column,
+.post-card.post-card-visual-with-text .post-visual-meta-shell,
+.post-card.post-card-visual-image-match-height .post-visual-column,
+.post-card.post-card-visual-image-match-height .post-visual-meta-shell {
+    align-self: stretch;
+}
+
+.post-card.post-card-visual-with-text .post-visual-column {
+    align-items: flex-start;
+}
+
+.post-card.post-card-visual-with-text .post-visual-column .post-image,
+.post-card.post-card-visual-image-match-height .post-visual-column .post-image {
+    height: auto;
+    width: auto;
+    max-height: 400px;
+    max-width: min(640px, 100%);
+    object-fit: unset;
+    object-position: top left;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    padding: var(--post-card-space);
+    align-items: flex-end;
+    justify-content: flex-start;
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    box-shadow: inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft);
+    background: var(--post-card-surface);
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-icon,
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-label,
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-filename,
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-download-btn,
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-play {
+    color: var(--post-card-ink);
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-download-btn,
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-play {
+    border-color: var(--post-card-line);
+    background: color-mix(in srgb, var(--post-card-surface) 70%, transparent);
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-icon {
+    position: absolute;
+    top: auto;
+    right: auto;
+    left: var(--post-card-space);
+    bottom: var(--post-card-space);
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    font-size: 88px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--post-card-ink);
+    border: none;
+    background: transparent;
+    transition: opacity 0.18s ease;
+    z-index: 1;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-play,
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-download-btn {
+    right: auto;
+    bottom: var(--post-card-space);
+    top: auto;
+    left: var(--post-card-space);
+    transform: none;
+    width: clamp(44px, 13vw, 56px);
+    height: clamp(44px, 13vw, 56px);
+    min-width: 0;
+    padding: 0;
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    background: var(--post-card-surface);
+    box-shadow:
+        inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft),
+        0 0 0 var(--post-card-stroke-w) color-mix(in srgb, var(--post-card-surface) 28%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--post-card-ink);
+    font-size: clamp(1.45rem, 4.8vw, 2.15rem);
+    line-height: 1;
+    opacity: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview:hover .post-file-preview-icon {
+    opacity: 0;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview:hover .post-file-preview-play,
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview:hover .post-file-preview-download-btn {
+    opacity: 1;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-label {
+    display: none;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-visual-column .post-file-preview-filename {
+    display: none;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-file-preview {
+    transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.post-card.post-card-nonvisual-no-cover .post-file-preview:hover {
+    filter: brightness(1.08) saturate(1.04);
+    transform: translateY(-1px);
+}
+
+.post-card.post-card-has-visual .post-visual-meta-shell .post-footer {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+}
+
+.post-card.post-card-has-visual .post-visual-meta-shell .post-visual-text-row {
+    display: block;
+}
+
+.post-edit-button-delete:hover {
+    background: var(--post-overlay-bg, var(--sys-bg));
+    border-color: var(--post-overlay-bg, var(--sys-bg));
+    color: var(--post-overlay-color, var(--sys-fg));
+}
+
+/* === 13.1 EDIT/DELETE FOOTER ACTIONS === */
+.post-footer-action {
+    font-size: var(--post-footer-size);
+    color: rgba(255, 0, 0, 0.5);
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.post-footer-action:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Mixed visual+text cards are restructured into .post-visual-split at runtime.
+   These overrides target the live structure so width/height behavior matches standalone cards. */
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-visual-text,
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-title-visual-text {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 680px;
+}
+
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-visual-text.is-long-text,
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-title-visual-text.is-long-text {
+    width: min(680px, 100%);
+}
+
+.post-card.post-card-visual-with-text .post-visual-meta-shell {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 680px;
+}
+
+@media (max-width: 1024px) {
+    .post-card.post-card-visual-with-text .post-visual-meta-shell,
+    .post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-visual-text,
+    .post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-title-visual-text {
+        min-width: 300px;
+        max-width: min(680px, calc(100vw - 64px));
+        width: fit-content;
+    }
+}
+
+.post-card.post-card-visual-with-text {
+    --mixed-visual-col-w: 400px;
+}
+
+.post-card.post-card-visual-with-text.post-card-visual-video {
+    --mixed-visual-col-w: 320px;
+}
+
+.post-card.post-card-visual-with-text.post-card-nonvisual-no-cover {
+    --mixed-visual-col-w: 300px;
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-no-cover:not(.post-card-visual-with-text) {
+    --mixed-visual-col-w: 300px;
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-cover:not(.post-card-visual-with-text) {
+    --mixed-visual-col-w: 300px;
+}
+
+.post-card.post-card-visual-with-text .post-visual-split {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: var(--post-card-space);
+}
+
+.post-card.post-card-visual-with-text.post-card-visual-jpeg:not(.post-card-nonvisual-cover) .post-visual-split {
+    gap: calc(var(--post-card-space) + 4px);
+}
+
+.post-card.post-card-visual-row.post-card-visual-title-image:not(.post-card-nonvisual-cover) .post-visual-split {
+    gap: calc(var(--post-card-space) + 4px);
+}
+
+.post-card.post-card-visual-with-text.post-card-nonvisual-cover .post-visual-split,
+.post-card.post-card-visual-row.post-card-nonvisual-cover .post-visual-split {
+    gap: var(--post-card-space) !important;
+}
+
+.post-card.post-card-nonvisual-cover .post-visual-column .post-file-preview.post-file-preview-cover-natural {
+    width: var(--mixed-visual-col-w, 300px);
+    height: var(--mixed-visual-col-w, 300px);
+    min-width: var(--mixed-visual-col-w, 300px);
+    max-width: var(--mixed-visual-col-w, 300px);
+    max-height: var(--mixed-visual-col-w, 300px);
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.post-card.post-card-nonvisual-cover .post-visual-column .post-file-preview.post-file-preview-cover-natural .post-file-preview-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+}
+
+.post-card.post-card-visual-with-text.post-card-nonvisual-no-cover .post-visual-split,
+.post-card.post-card-visual-row.post-card-nonvisual-no-cover .post-visual-split {
+    gap: var(--post-card-space) !important;
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-no-cover:not(.post-card-visual-with-text) .post-visual-split {
+    gap: var(--post-card-space) !important;
+}
+
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-visual-text,
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-title-visual-text {
+    padding-left: var(--post-text-card-pad);
+    padding-right: var(--post-text-card-pad);
+}
+
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-visual-text + .post-footer,
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-title-visual-text + .post-footer {
+    margin-top: calc(var(--post-card-stroke-w) * -1);
+}
+
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-visual-text.is-long-text .post-body,
+.post-card.post-card-visual-with-text .post-visual-meta-shell .post-card-content.post-layout-title-visual-text.is-long-text .post-body {
+    width: min(680px, 100%);
+    max-width: 100%;
+}
+
+.post-card.post-card-visual-with-text .post-visual-column .post-image {
+    width: var(--mixed-visual-col-w);
+    height: var(--mixed-visual-col-w);
+    min-width: var(--mixed-visual-col-w);
+    max-width: var(--mixed-visual-col-w);
+    max-height: 400px;
+    object-fit: contain;
+    object-position: right top;
+}
+
+.post-card.post-card-visual-with-text.post-card-nonvisual-cover .post-visual-column .post-image,
+.post-card.post-card-visual-row.post-card-nonvisual-cover .post-visual-column .post-image {
+    object-position: left top;
+}
+
+.post-card.post-card-visual-with-text .post-visual-column .post-file-preview {
+    width: var(--mixed-visual-col-w);
+    height: var(--mixed-visual-col-w);
+    min-width: var(--mixed-visual-col-w);
+    max-width: min(var(--mixed-visual-col-w), 100%);
+    max-height: 400px;
+    aspect-ratio: 1 / 1;
+}
+
+.post-card.post-card-visual-with-text.post-card-visual-video .post-visual-column .post-file-preview.post-file-preview-video {
+    height: auto;
+    max-height: 400px;
+    aspect-ratio: auto;
+    overflow: visible;
+    background: transparent;
+}
+
+.post-card.post-card-visual-with-text.post-card-visual-video .post-visual-column .post-file-preview.post-file-preview-video .post-preview-video {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.post-card.post-card-visual-with-text .post-visual-column {
+    flex: 0 0 auto;
+    width: var(--mixed-visual-col-w);
+    align-self: flex-start;
+}
+
+.post-card.post-card-visual-with-text .post-visual-meta-shell {
+    flex: 0 0 auto;
+    align-self: flex-start;
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-no-cover:not(.post-card-visual-with-text) .post-visual-column,
+.post-card.post-card-visual-row.post-card-nonvisual-no-cover:not(.post-card-visual-with-text) .post-visual-column .post-file-preview {
+    width: var(--mixed-visual-col-w);
+    min-width: var(--mixed-visual-col-w);
+    max-width: var(--mixed-visual-col-w);
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-cover:not(.post-card-visual-with-text) .post-visual-column,
+.post-card.post-card-visual-row.post-card-nonvisual-cover:not(.post-card-visual-with-text) .post-visual-column .post-file-preview {
+    width: var(--mixed-visual-col-w, 300px);
+    min-width: var(--mixed-visual-col-w, 300px);
+    max-width: var(--mixed-visual-col-w, 300px);
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-no-cover:not(.post-card-visual-with-text) .post-visual-meta-shell,
+.post-card.post-card-visual-row.post-card-nonvisual-no-cover:not(.post-card-visual-with-text) .post-visual-meta-shell .post-card-content.post-layout-title-visual {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 680px;
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-cover:not(.post-card-visual-with-text) .post-visual-meta-shell,
+.post-card.post-card-visual-row.post-card-nonvisual-cover:not(.post-card-visual-with-text) .post-visual-meta-shell .post-card-content.post-layout-title-visual {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 680px;
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-no-cover:not(.post-card-visual-with-text) .post-visual-meta-shell .post-card-content.post-layout-title-visual {
+    padding-left: var(--post-text-card-pad);
+    padding-right: var(--post-text-card-pad);
+}
+
+.post-card.post-card-visual-row.post-card-nonvisual-cover:not(.post-card-visual-with-text) .post-visual-meta-shell .post-card-content.post-layout-title-visual {
+    padding-left: var(--post-text-card-pad);
+    padding-right: var(--post-text-card-pad);
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    gap: 0;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: var(--post-card-space);
+    background: var(--post-card-surface);
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    box-shadow: inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft);
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview-label,
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview-filename,
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview-cover {
+    display: none !important;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview-icon {
+    position: absolute;
+    top: auto;
+    right: auto;
+    left: var(--post-card-space);
+    bottom: var(--post-card-space);
+    width: auto;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 88px;
+    line-height: 1;
+    color: var(--post-card-ink);
+    transition: opacity 0.18s ease;
+    z-index: 1;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview-play,
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview-download-btn {
+    right: auto;
+    bottom: var(--post-card-space);
+    top: auto;
+    left: var(--post-card-space);
+    transform: none;
+    width: clamp(44px, 13vw, 56px);
+    height: clamp(44px, 13vw, 56px);
+    min-width: 0;
+    padding: 0;
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    background: var(--post-card-surface);
+    box-shadow:
+        inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft),
+        0 0 0 var(--post-card-stroke-w) color-mix(in srgb, var(--post-card-surface) 28%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--post-card-ink);
+    font-size: clamp(1.45rem, 4.8vw, 2.15rem);
+    line-height: 1;
+    opacity: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview:hover .post-file-preview-icon {
+    opacity: 0;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview:hover .post-file-preview-play,
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual .post-file-preview:hover .post-file-preview-download-btn {
+    opacity: 1;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone > .post-file-name-box,
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone > .post-footer {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone > .post-file-name-box {
+    margin-bottom: 0;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone .post-card-content.post-layout-visual + .post-footer {
+    margin-top: 0;
+}
+
+.post-card.post-card-nonvisual-no-cover.post-card-visual-standalone > .post-footer {
+    background: var(--post-card-surface);
+    border: var(--post-card-stroke-w) solid var(--post-card-line);
+    box-shadow: inset 0 0 0 var(--post-card-inner-stroke-w) var(--post-card-line-soft);
+}
+
+.post-card.post-card-nonvisual-cover-standalone .post-card-content.post-layout-visual,
+.post-card.post-card-nonvisual-cover-standalone .post-card-content.post-layout-visual .post-file-preview,
+.post-card.post-card-nonvisual-cover-standalone .post-card-content.post-layout-visual .post-file-preview.post-file-preview-cover-natural,
+.post-card.post-card-nonvisual-cover-standalone .post-card-content.post-layout-visual .post-file-preview .post-file-preview-cover,
+.post-card.post-card-nonvisual-cover-standalone > .post-file-name-box,
+.post-card.post-card-nonvisual-cover-standalone > .post-footer {
+    width: max(300px, var(--post-nonvisual-cover-w, 300px));
+    min-width: max(300px, var(--post-nonvisual-cover-w, 300px));
+    max-width: max(300px, var(--post-nonvisual-cover-w, 300px));
+}
+
+.post-card.post-card-nonvisual-cover-standalone .post-card-content.post-layout-visual .post-file-preview.post-file-preview-cover-natural {
+    height: max(300px, var(--post-nonvisual-cover-w, 300px));
+    max-height: max(300px, var(--post-nonvisual-cover-w, 300px));
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.post-card.post-card-nonvisual-cover-standalone .post-card-content.post-layout-visual .post-file-preview.post-file-preview-cover-natural .post-file-preview-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    display: block;
+}
+
+.post-card.post-card-nonvisual-cover-standalone > .post-file-name-box,
+.post-card.post-card-nonvisual-cover-standalone > .post-footer {
+    width: max(300px, var(--post-nonvisual-cover-w, 300px));
+    min-width: max(300px, var(--post-nonvisual-cover-w, 300px));
+    max-width: max(300px, var(--post-nonvisual-cover-w, 300px));
+}
+
+@media (max-width: 1024px) {
+    .post-card.post-card-visual-with-text .post-visual-column .post-image,
+    .post-card.post-card-visual-with-text .post-visual-column .post-file-preview {
+        min-width: min(var(--mixed-visual-col-w), calc(100vw - 64px));
+        max-width: min(var(--mixed-visual-col-w), calc(100vw - 64px));
+    }
+
+    .post-card.post-card-visual-with-text .post-visual-column {
+        width: min(var(--mixed-visual-col-w), calc(100vw - 64px));
+    }
+
+    .post-card.post-card-visual-with-text .post-visual-column .post-file-preview {
+        width: min(var(--mixed-visual-col-w), calc(100vw - 64px));
+        height: min(var(--mixed-visual-col-w), calc(100vw - 64px));
+    }
+
+    .post-card.post-card-visual-with-text .post-visual-column .post-image {
+        width: min(var(--mixed-visual-col-w), calc(100vw - 64px));
+        height: min(var(--mixed-visual-col-w), calc(100vw - 64px));
+    }
+
+    .post-card.post-card-visual-with-text.post-card-visual-video .post-visual-column .post-file-preview.post-file-preview-video {
+        height: auto;
+    }
+}
+
+.post-footer-thread.active {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+.post-card.post-card-thread-source {
+    outline: 2px solid rgba(244, 249, 255, 0.78);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 2px rgba(224, 236, 252, 0.34);
+}
+
+.post-card.post-card-thread-linked {
+    outline: 1px dashed rgba(238, 246, 255, 0.66);
+    outline-offset: 2px;
+}
+
+.post-footer-delete:hover {
+    color: rgba(255, 100, 100, 0.9);
+}
+
+/* ============================================ */
+/* 15.0 FOOTER FILTER BUTTONS                  */
+/* ============================================ */ 
+
+/* Clickable footer filters (normal mode) */
+.post-footer-filter-btn {
+    cursor: pointer;
+}
+
+.post-footer-filter-btn:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0px;
+}
+

@@ -1,0 +1,4 @@
+ALTER TABLE public.posts ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ DEFAULT NULL;
+CREATE INDEX IF NOT EXISTS idx_posts_deleted_at ON public.posts (deleted_at);
+
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT FALSE;
