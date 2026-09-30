@@ -1,13 +1,13 @@
-// Vite base (e.g. '/demo-payme/' on GitHub Pages, '/' locally).
+// Vite base (e.g. '/demo-preview/' on GitHub Pages, '/' locally).
 export const BASE_PATH = import.meta.env.BASE_URL || '/';
 
-// '/login' -> '/demo-payme/login'
+// '/login' -> '/demo-preview/login'
 export function appPath(path = '/') {
   const cleaned = String(path || '/').replace(/^\/+/, '');
   return `${BASE_PATH}${cleaned}`;
 }
 
-// '/demo-payme/login' -> '/login'
+// '/demo-preview/login' -> '/login'
 export function stripBasePath(pathname = '/') {
   const raw = String(pathname || '/');
   const baseNoSlash = BASE_PATH.replace(/\/+$/, '');
