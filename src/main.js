@@ -803,6 +803,11 @@ function canCurrentUserEditPost(post) {
   return String(post.user_id) === String(currentUser.id);
 }
 
+// Moving and deleting is open to every signed-in user; content edits stay owner-only.
+function canCurrentUserArrangePost(post) {
+  return Boolean(currentUser && post);
+}
+
 function inferCategoryColorColumn(records = []) {
   for (const column of CATEGORY_COLOR_COLUMN_CANDIDATES) {
     if (records.some((row) => Object.prototype.hasOwnProperty.call(row || {}, column))) {
@@ -2141,10 +2146,6 @@ async function tryDropBulkPlacement() {
       .update({ x, y })
       .eq('id', item.post.id);
 
-    if (!currentUserData?.is_admin) {
-      query = query.eq('user_id', currentUser.id);
-    }
-
     return query;
   });
 
@@ -2185,7 +2186,7 @@ function toggleEditPostSelection(postId) {
 }
 
 function getSelectableEditPosts() {
-  return (lastLoadedPosts || []).filter((post) => canCurrentUserEditPost(post));
+  return (lastLoadedPosts || []).filter((post) => canCurrentUserArrangePost(post));
 }
 
 function getSelectedEditablePostIds() {
@@ -2381,13 +2382,13 @@ async function tryDropPlacement(e) {
       .from('posts')
       .update({ x, y })
       .eq('id', postId);
-
-    if (!currentUserData?.is_admin) {
-      placementQuery = placementQuery.eq('user_id', currentUser.id);
-    }
   }
 
-  const { error } = await placementQuery;
+  const { data: placedRows, error } = await placementQuery.select('id');
+  if (!error && Array.isArray(placedRows) && placedRows.length === 0) {
+    alert('Placement save failed: not allowed to move this item (check Supabase RLS policies).');
+    return;
+  }
   if (error) {
     const placementMessage = String(
       error?.message
@@ -6051,18 +6052,17 @@ async function handleDeletePosts(postIds = []) {
 
     applyOptimisticPostRemoval(deleteIds);
 
-    let deleteQuery = supabase
+    const deleteQuery = supabase
       .from('posts')
       .delete()
       .in('id', deleteIds);
 
-    if (!currentUserData?.is_admin) {
-      deleteQuery = deleteQuery.eq('user_id', currentUser.id);
-    }
-
-    const { error } = await deleteQuery;
+    const { data: deletedRows, error } = await deleteQuery.select('id');
 
     if (error) throw error;
+    if (Array.isArray(deletedRows) && deletedRows.length === 0) {
+      throw new Error('not allowed to delete this post (check Supabase RLS policies).');
+    }
 
     deleteIds.forEach((id) => selectedEditPostIds.delete(String(id)));
     if (activeThreadSourcePostId && deleteIds.includes(String(activeThreadSourcePostId))) {
@@ -10024,6 +10024,7 @@ function buildPostCard(post, user) {
   card.className = 'post-card';
   card.dataset.postId = post.id;
   const canEditThisPost = canCurrentUserEditPost(post);
+  const canArrangeThisPost = canCurrentUserArrangePost(post);
   const isSelected = isEditPostSelected(post.id);
 
   const idx = (buildPostCard._indexCounter || 0);
@@ -10266,7 +10267,7 @@ function buildPostCard(post, user) {
   const pfpSrc = resolvePfpUrl(user);
 
 
-      if (editMode && canEditThisPost) {
+      if (editMode && canArrangeThisPost) {
     footer.innerHTML = `
       <img class="post-footer-pfp" src="${pfpSrc}" alt="" data-user-id="${post.user_id}" data-avatar="1" loading="lazy" decoding="async" style="cursor:pointer;">
       <span class="post-footer-username"><span class="post-footer-username-track">${user?.username || 'unknown'}</span></span>
@@ -10276,8 +10277,8 @@ function buildPostCard(post, user) {
     editChrome.className = 'post-edit-chrome';
     editChrome.innerHTML = `
       <div class="post-edit-top-actions" aria-label="post edit actions">
-        <button class="post-edit-button post-edit-button-thread ${String(activeThreadSourcePostId) === String(post.id) ? 'active' : ''}" type="button" title="thread">𓍯</button>
-        <button class="post-edit-button post-edit-button-edit" type="button" title="edit">☰</button>
+        ${canEditThisPost ? `<button class="post-edit-button post-edit-button-thread ${String(activeThreadSourcePostId) === String(post.id) ? 'active' : ''}" type="button" title="thread">𓍯</button>
+        <button class="post-edit-button post-edit-button-edit" type="button" title="edit">☰</button>` : ''}
       </div>
       <button class="post-edit-button post-edit-button-delete" type="button" title="delete">x</button>
     `;
@@ -10353,7 +10354,7 @@ function buildPostCard(post, user) {
     });
 
     card.addEventListener('mousedown', async (e) => {
-      if (!editMode || !canEditThisPost) return;
+      if (!editMode || !canArrangeThisPost) return;
       if (e.button !== 0) return;
 
       if (e.ctrlKey || e.metaKey) {
@@ -10511,7 +10512,7 @@ function buildPostCard(post, user) {
       return;
     }
 
-    if (canEditThisPost && (e.ctrlKey || e.metaKey)) {
+    if (canArrangeThisPost && (e.ctrlKey || e.metaKey)) {
       e.stopPropagation();
       e.preventDefault();
       toggleEditPostSelection(post.id);
