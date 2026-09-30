@@ -120,9 +120,6 @@ const postText = document.getElementById('postText');
 const postSubmitBtn = document.getElementById('postSubmitBtn');
 const postCancelBtn = document.getElementById('postCancelBtn');
 
-// Log out
-const logoutBtn = document.getElementById('logoutBtn');
-
 // Cover image prompt
 const postCoverImageLabel = document.getElementById('postCoverImageLabel');
 const postCoverImageInput = document.getElementById('postCoverImageInput');
@@ -1630,12 +1627,41 @@ function initThemeColorPicker() {
 // SYSTEM THEME — applies --sys-bg, --sys-fg, --sys-font
 // ============================================
 const SYS_THEME_KEY = 'demo4-sys-theme-v1';
+const sysThemeState = { bg: '#ffffff', fg: '#000000', bgAlpha: 1, fgAlpha: 1, font: '' };
 
-function applySysTheme({ bg, fg, font } = {}) {
+function normalizeHexColor(value, fallback) {
+  const raw = String(value || '').trim();
+  const short = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(raw);
+  if (short) return `#${short[1]}${short[1]}${short[2]}${short[2]}${short[3]}${short[3]}`.toLowerCase();
+  if (/^#[0-9a-f]{6}$/i.test(raw)) return raw.toLowerCase();
+  return fallback;
+}
+
+function clampAlpha(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return 1;
+  return Math.max(0, Math.min(1, num));
+}
+
+function toThemeColor(hex, alpha) {
+  if (alpha >= 1) return hex;
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function applySysTheme(next = {}) {
+  if (next.bg !== undefined) sysThemeState.bg = normalizeHexColor(next.bg, sysThemeState.bg);
+  if (next.fg !== undefined) sysThemeState.fg = normalizeHexColor(next.fg, sysThemeState.fg);
+  if (next.bgAlpha !== undefined) sysThemeState.bgAlpha = clampAlpha(next.bgAlpha);
+  if (next.fgAlpha !== undefined) sysThemeState.fgAlpha = clampAlpha(next.fgAlpha);
+  if (next.font) sysThemeState.font = String(next.font);
+
   const root = document.documentElement;
-  if (bg)   root.style.setProperty('--sys-bg',   bg);
-  if (fg)   root.style.setProperty('--sys-fg',   fg);
-  if (font) root.style.setProperty('--sys-font', font);
+  root.style.setProperty('--sys-bg', toThemeColor(sysThemeState.bg, sysThemeState.bgAlpha));
+  root.style.setProperty('--sys-fg', toThemeColor(sysThemeState.fg, sysThemeState.fgAlpha));
+  if (sysThemeState.font) root.style.setProperty('--sys-font', sysThemeState.font);
 }
 
 function loadSysTheme() {
@@ -1649,11 +1675,7 @@ loadSysTheme();
 
 function saveSysTheme() {
   try {
-    const root = document.documentElement;
-    const bg   = root.style.getPropertyValue('--sys-bg').trim()   || '#ffffff';
-    const fg   = root.style.getPropertyValue('--sys-fg').trim()   || '#000000';
-    const font = root.style.getPropertyValue('--sys-font').trim() || 'inherit';
-    localStorage.setItem(SYS_THEME_KEY, JSON.stringify({ bg, fg, font }));
+    localStorage.setItem(SYS_THEME_KEY, JSON.stringify(sysThemeState));
   } catch {}
 }
 
@@ -1673,19 +1695,33 @@ function initSettingsPanel() {
   const animOffBtn = document.getElementById('settingsAnimOff');
   const autoMusicOnBtn = document.getElementById('settingsAutoMusicOn');
   const autoMusicOffBtn = document.getElementById('settingsAutoMusicOff');
+  const bgOpacity = document.getElementById('settingsBgOpacity');
+  const fgOpacity = document.getElementById('settingsFgOpacity');
+  const bgOpacityValue = document.getElementById('settingsBgOpacityValue');
+  const fgOpacityValue = document.getElementById('settingsFgOpacityValue');
 
   if (!bgSwatch || !fgSwatch || !fontSel || !fontDropdownWrap || !fontDisplay || !fontDisplayText || !fontDropdown || !animOnBtn || !animOffBtn || !autoMusicOnBtn || !autoMusicOffBtn) return;
 
-  // Sync initial values from CSS
+  // Sync initial values from saved theme
   const root = document.documentElement;
-  const curBg   = root.style.getPropertyValue('--sys-bg').trim()   || '#ffffff';
-  const curFg   = root.style.getPropertyValue('--sys-fg').trim()   || '#000000';
-  const curFont = root.style.getPropertyValue('--sys-font').trim() || 'Arial, Helvetica, sans-serif';
+  const curBg   = sysThemeState.bg;
+  const curFg   = sysThemeState.fg;
+  const curFont = sysThemeState.font || root.style.getPropertyValue('--sys-font').trim() || 'Arial, Helvetica, sans-serif';
 
   bgSwatch.value = curBg;
   if (bgHex) bgHex.value = curBg;
   fgSwatch.value = curFg;
   if (fgHex) fgHex.value = curFg;
+
+  const syncOpacityUi = () => {
+    const bgPct = Math.round(sysThemeState.bgAlpha * 100);
+    const fgPct = Math.round(sysThemeState.fgAlpha * 100);
+    if (bgOpacity) bgOpacity.value = String(bgPct);
+    if (fgOpacity) fgOpacity.value = String(fgPct);
+    if (bgOpacityValue) bgOpacityValue.textContent = `${bgPct}%`;
+    if (fgOpacityValue) fgOpacityValue.textContent = `${fgPct}%`;
+  };
+  syncOpacityUi();
 
   // Select matching font option
   const fontOpts = Array.from(fontSel.options);
@@ -1737,12 +1773,18 @@ function initSettingsPanel() {
     applySysTheme({
       bg:   bgSwatch.value,
       fg:   fgSwatch.value,
+      bgAlpha: bgOpacity ? Number(bgOpacity.value) / 100 : undefined,
+      fgAlpha: fgOpacity ? Number(fgOpacity.value) / 100 : undefined,
       font: fontSel.value
     });
+    syncOpacityUi();
     saveSysTheme();
   };
 
   renderSettingsFontOptions();
+
+  bgOpacity?.addEventListener('input', applyAndSave);
+  fgOpacity?.addEventListener('input', applyAndSave);
 
   bgSwatch.addEventListener('input', () => {
     if (bgHex) bgHex.value = bgSwatch.value;
@@ -1751,9 +1793,10 @@ function initSettingsPanel() {
 
   if (bgHex) {
     bgHex.addEventListener('change', () => {
-      const v = bgHex.value.trim();
-      if (/^#[0-9a-fA-F]{3,8}$/.test(v)) {
+      const v = normalizeHexColor(bgHex.value, '');
+      if (v) {
         bgSwatch.value = v;
+        bgHex.value = v;
         applyAndSave();
       }
     });
@@ -1766,9 +1809,10 @@ function initSettingsPanel() {
 
   if (fgHex) {
     fgHex.addEventListener('change', () => {
-      const v = fgHex.value.trim();
-      if (/^#[0-9a-fA-F]{3,8}$/.test(v)) {
+      const v = normalizeHexColor(fgHex.value, '');
+      if (v) {
         fgSwatch.value = v;
+        fgHex.value = v;
         applyAndSave();
       }
     });
@@ -2500,6 +2544,7 @@ async function checkAuth() {
       const loginUrl = safeNext
         ? `${appPath('/login')}?next=${encodeURIComponent(safeNext)}`
         : appPath('/login');
+      isRedirectingToLogin = true;
       window.location.replace(loginUrl);
     };
 
@@ -11295,6 +11340,15 @@ function initializeEventListeners() {
 // ============================================
 
 let mainPageBootstrapStarted = false;
+let isRedirectingToLogin = false;
+
+function revealAppAfterBoot() {
+  if (isRedirectingToLogin) return;
+  document.documentElement.classList.remove('app-booting');
+}
+
+// Never leave the page hidden if boot stalls on a slow request.
+window.setTimeout(revealAppAfterBoot, 8000);
 
 async function bootstrapMainPage() {
   if (mainPageBootstrapStarted) return;
@@ -11486,6 +11540,7 @@ async function bootstrapMainPage() {
     activeWorldId: activeWorldContext?.world?.id || null
   });
   await loadPosts();
+  revealAppAfterBoot();
 
   if (canvasViewport) {
     requestAnimationFrame(() => {
@@ -11542,7 +11597,7 @@ async function bootstrapMainPage() {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => { void bootstrapMainPage(); }, { once: true });
+  document.addEventListener('DOMContentLoaded', () => { void bootstrapMainPage().catch((err) => console.error('Bootstrap failed:', err)).finally(revealAppAfterBoot); }, { once: true });
 } else {
-  void bootstrapMainPage();
+  void bootstrapMainPage().catch((err) => console.error('Bootstrap failed:', err)).finally(revealAppAfterBoot);
 }

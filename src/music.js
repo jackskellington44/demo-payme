@@ -1433,6 +1433,7 @@ function updateBarDisplay() {
   }
 
   musicPlayPause.dataset.state = isPlaying ? 'pause' : 'play';
+  musicPlayPause.setAttribute('aria-label', isPlaying ? 'pause' : 'play');
 }
 
 // ============================================

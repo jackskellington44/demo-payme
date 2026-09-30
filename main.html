@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="app-booting">
 <!-- ================================================ -->
 <!-- MONKEY SPACE - Main Feed Page                   -->
 <!-- ================================================ -->
@@ -28,6 +28,7 @@
     <title>monkey space</title>
     <link rel="icon" href="/images/favicon.png" />
     <link rel="stylesheet" href="/style.css">
+    <style>html.app-booting body { visibility: hidden; } html.app-booting { background: #000; }</style>
     <script type="module" src="/src/main.js"></script>
 </head>
 
@@ -44,8 +45,6 @@
       <svg id="linkLayer" width="100%" height="100%"></svg>
       <div id="postCanvas"></div>
     </div>
-
-    <button id="logoutBtn" class="view-toggle logout-btn">log out</button>
   </div>
 
   <!-- ================================================ -->
@@ -206,18 +205,49 @@
     <div class="settings-panel-inner" id="settingsPanelInner">
       <div class="settings-control-row settings-control-row-compact">
         <input type="color" id="settingsBgColor" class="settings-color-swatch settings-color-swatch-lg" value="#ffffff" title="background color">
+        <input type="text" id="settingsBgHex" class="settings-color-hex" value="#ffffff" maxlength="7" spellcheck="false" aria-label="background color hex">
+      </div>
+      <div class="settings-opacity-row">
+        <span class="settings-toggle-label">background opacity</span>
+        <input type="range" id="settingsBgOpacity" class="settings-opacity-slider" min="0" max="100" step="1" value="100" aria-label="background opacity">
+        <span id="settingsBgOpacityValue" class="settings-opacity-value">100%</span>
+      </div>
+      <div class="settings-control-row settings-control-row-compact">
         <input type="color" id="settingsFgColor" class="settings-color-swatch settings-color-swatch-sm" value="#000000" title="font and outline color">
-        <button id="settingsAnimBtn" class="settings-anim-btn" type="button" aria-label="toggle movement">͙͘͡★</button>
+        <input type="text" id="settingsFgHex" class="settings-color-hex" value="#000000" maxlength="7" spellcheck="false" aria-label="font and outline color hex">
+      </div>
+      <div class="settings-opacity-row">
+        <span class="settings-toggle-label">font / outline opacity</span>
+        <input type="range" id="settingsFgOpacity" class="settings-opacity-slider" min="0" max="100" step="1" value="100" aria-label="font and outline opacity">
+        <span id="settingsFgOpacityValue" class="settings-opacity-value">100%</span>
+      </div>
+      <div class="settings-toggle-row">
+        <span class="settings-toggle-label">movement</span>
+        <div class="settings-toggle-switch" role="radiogroup" aria-label="movement">
+          <button id="settingsAnimOn" class="settings-toggle-btn" type="button" role="radio" aria-checked="false">on</button>
+          <button id="settingsAnimOff" class="settings-toggle-btn" type="button" role="radio" aria-checked="false">off</button>
+        </div>
+      </div>
+      <div class="settings-toggle-row">
+        <span class="settings-toggle-label">auto music</span>
+        <div class="settings-toggle-switch" role="radiogroup" aria-label="automatic music">
+          <button id="settingsAutoMusicOn" class="settings-toggle-btn" type="button" role="radio" aria-checked="false">on</button>
+          <button id="settingsAutoMusicOff" class="settings-toggle-btn" type="button" role="radio" aria-checked="false">off</button>
+        </div>
       </div>
       <div class="settings-control-row settings-control-row-select settings-control-row-select-only">
-        <div class="settings-select-wrap">
-          <select id="settingsFontSelect" class="settings-font-select">
+        <div class="settings-select-wrap" id="settingsFontDropdownWrap">
+          <select id="settingsFontSelect" class="settings-font-select settings-font-native" aria-hidden="true" tabindex="-1">
             <option value="'Liberation Mono', 'Courier New', monospace">Liberation Mono</option>
             <option value="'Liberation Sans', Arial, sans-serif">Liberation Sans</option>
             <option value="'Liberation Serif', 'Times New Roman', serif">Liberation Serif</option>
             <option value="'Linux Biolinum G', 'Liberation Sans', Arial, sans-serif">Linux Biolinum G</option>
           </select>
-          <span class="settings-select-chevron" aria-hidden="true">▾</span>
+          <div id="settingsFontDisplay" class="settings-font-display" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+            <span id="settingsFontDisplayText">select font</span>
+            <span class="settings-select-chevron" aria-hidden="true">&#9662;</span>
+          </div>
+          <div id="settingsFontDropdown" class="settings-font-dropdown" role="listbox"></div>
         </div>
       </div>
     </div>
@@ -281,7 +311,7 @@
       <!-- Left zone: playback controls + track identity -->
       <div class="music-bar-zone music-bar-zone-left">
         <button id="musicPrev" class="music-bar-box" type="button" title="previous" aria-label="previous">◀</button>
-        <button id="musicPlayPause" class="music-bar-box music-bar-box-big" type="button" title="play / pause" aria-label="play">▶</button>
+        <button id="musicPlayPause" class="music-bar-box music-bar-box-big" type="button" title="play / pause" aria-label="play" data-state="play"><span class="music-playpause-icon" aria-hidden="true"><span class="ui-icon icon-play music-icon-play"></span><span class="ui-icon icon-pause music-icon-pause"></span></span></button>
         <button id="musicNext" class="music-bar-box" type="button" title="next" aria-label="next">▶</button>
 
         <div class="music-bar-track">

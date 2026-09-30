@@ -1949,6 +1949,36 @@ body.app-edit-mode .right-toolbar {
   color: var(--sys-bg);
 }
 
+.settings-opacity-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.settings-opacity-row .settings-toggle-label {
+  grid-column: 1 / -1;
+}
+
+.settings-opacity-slider {
+  width: 100%;
+  accent-color: var(--sys-bg);
+  cursor: pointer;
+}
+
+.settings-opacity-value {
+  min-width: 3.5ch;
+  text-align: right;
+  color: var(--sys-bg);
+  font-family: var(--sys-font, inherit);
+  font-size: 0.76rem;
+}
+
+.settings-panel .settings-color-hex {
+  border-bottom-color: color-mix(in srgb, var(--sys-bg) 40%, transparent);
+  color: var(--sys-bg);
+}
+
 /* ============================================ */
 /* 19.2 PFP WIDGET                              */
 /* ============================================ */
