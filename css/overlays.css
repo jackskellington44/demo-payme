@@ -12,8 +12,8 @@
   bottom: 44px;
   left: 0;
   right: var(--toolbar-w);
-  --pd-ui-bg: var(--post-overlay-bg, var(--sys-fg));
-  --pd-ui-fg: var(--post-overlay-color, var(--sys-bg));
+  --pd-ui-bg: var(--post-overlay-bg, var(--post-bg));
+  --pd-ui-fg: var(--post-overlay-color, var(--post-fg));
   --pd-ui-fg-soft: color-mix(in srgb, var(--pd-ui-fg) 72%, transparent);
   --pd-ui-fg-muted: color-mix(in srgb, var(--pd-ui-fg) 50%, transparent);
   --pd-preview-fg: var(--pd-ui-fg);
@@ -1954,6 +1954,21 @@ body.app-edit-mode .right-toolbar {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 4px 10px;
+}
+
+.settings-panel-inner > .settings-section-heading {
+  margin-top: 22px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid color-mix(in srgb, var(--sys-bg) 35%, transparent);
+  color: var(--sys-bg);
+  font-family: var(--sys-font, inherit);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+.settings-panel-inner > .settings-section-heading:first-child {
+  margin-top: 0;
 }
 
 .settings-opacity-row .settings-toggle-label {

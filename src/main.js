@@ -1627,7 +1627,12 @@ function initThemeColorPicker() {
 // SYSTEM THEME — applies --sys-bg, --sys-fg, --sys-font
 // ============================================
 const SYS_THEME_KEY = 'demo4-sys-theme-v1';
-const sysThemeState = { bg: '#ffffff', fg: '#000000', bgAlpha: 1, fgAlpha: 1, font: '' };
+// postBg/postFg stay null until the user picks them, so posts keep following the system colors (inverted).
+const sysThemeState = {
+  bg: '#ffffff', fg: '#000000', bgAlpha: 1, fgAlpha: 1,
+  postBg: null, postFg: null, postBgAlpha: 1, postFgAlpha: 1,
+  font: ''
+};
 
 function normalizeHexColor(value, fallback) {
   const raw = String(value || '').trim();
@@ -1652,15 +1657,22 @@ function toThemeColor(hex, alpha) {
 }
 
 function applySysTheme(next = {}) {
-  if (next.bg !== undefined) sysThemeState.bg = normalizeHexColor(next.bg, sysThemeState.bg);
-  if (next.fg !== undefined) sysThemeState.fg = normalizeHexColor(next.fg, sysThemeState.fg);
-  if (next.bgAlpha !== undefined) sysThemeState.bgAlpha = clampAlpha(next.bgAlpha);
-  if (next.fgAlpha !== undefined) sysThemeState.fgAlpha = clampAlpha(next.fgAlpha);
+  ['bg', 'fg', 'postBg', 'postFg'].forEach((key) => {
+    if (next[key] === undefined) return;
+    sysThemeState[key] = next[key] === null ? null : normalizeHexColor(next[key], sysThemeState[key]);
+  });
+  ['bgAlpha', 'fgAlpha', 'postBgAlpha', 'postFgAlpha'].forEach((key) => {
+    if (next[key] !== undefined) sysThemeState[key] = clampAlpha(next[key]);
+  });
   if (next.font) sysThemeState.font = String(next.font);
 
   const root = document.documentElement;
   root.style.setProperty('--sys-bg', toThemeColor(sysThemeState.bg, sysThemeState.bgAlpha));
   root.style.setProperty('--sys-fg', toThemeColor(sysThemeState.fg, sysThemeState.fgAlpha));
+  if (sysThemeState.postBg) root.style.setProperty('--post-bg', toThemeColor(sysThemeState.postBg, sysThemeState.postBgAlpha));
+  else root.style.removeProperty('--post-bg');
+  if (sysThemeState.postFg) root.style.setProperty('--post-fg', toThemeColor(sysThemeState.postFg, sysThemeState.postFgAlpha));
+  else root.style.removeProperty('--post-fg');
   if (sysThemeState.font) root.style.setProperty('--sys-font', sysThemeState.font);
 }
 
@@ -1683,9 +1695,7 @@ function initSettingsPanel() {
   loadSysTheme();
 
   const bgSwatch = document.getElementById('settingsBgColor');
-  const bgHex    = document.getElementById('settingsBgHex');
   const fgSwatch = document.getElementById('settingsFgColor');
-  const fgHex    = document.getElementById('settingsFgHex');
   const fontSel  = document.getElementById('settingsFontSelect');
   const fontDropdownWrap = document.getElementById('settingsFontDropdownWrap');
   const fontDisplay = document.getElementById('settingsFontDisplay');
@@ -1695,33 +1705,59 @@ function initSettingsPanel() {
   const animOffBtn = document.getElementById('settingsAnimOff');
   const autoMusicOnBtn = document.getElementById('settingsAutoMusicOn');
   const autoMusicOffBtn = document.getElementById('settingsAutoMusicOff');
-  const bgOpacity = document.getElementById('settingsBgOpacity');
-  const fgOpacity = document.getElementById('settingsFgOpacity');
-  const bgOpacityValue = document.getElementById('settingsBgOpacityValue');
-  const fgOpacityValue = document.getElementById('settingsFgOpacityValue');
 
   if (!bgSwatch || !fgSwatch || !fontSel || !fontDropdownWrap || !fontDisplay || !fontDisplayText || !fontDropdown || !animOnBtn || !animOffBtn || !autoMusicOnBtn || !autoMusicOffBtn) return;
 
-  // Sync initial values from saved theme
   const root = document.documentElement;
-  const curBg   = sysThemeState.bg;
-  const curFg   = sysThemeState.fg;
   const curFont = sysThemeState.font || root.style.getPropertyValue('--sys-font').trim() || 'Arial, Helvetica, sans-serif';
 
-  bgSwatch.value = curBg;
-  if (bgHex) bgHex.value = curBg;
-  fgSwatch.value = curFg;
-  if (fgHex) fgHex.value = curFg;
+  // Each group: a color swatch + hex field + opacity slider bound to one color/alpha pair.
+  // Post colors fall back to the inverted system colors until explicitly chosen.
+  const colorGroups = [
+    { prefix: 'settingsBg', colorKey: 'bg', alphaKey: 'bgAlpha', fallback: () => sysThemeState.bg },
+    { prefix: 'settingsFg', colorKey: 'fg', alphaKey: 'fgAlpha', fallback: () => sysThemeState.fg },
+    { prefix: 'settingsPostBg', colorKey: 'postBg', alphaKey: 'postBgAlpha', fallback: () => sysThemeState.fg },
+    { prefix: 'settingsPostFg', colorKey: 'postFg', alphaKey: 'postFgAlpha', fallback: () => sysThemeState.bg }
+  ].map((group) => ({
+    ...group,
+    swatch: document.getElementById(`${group.prefix}Color`),
+    hex: document.getElementById(`${group.prefix}Hex`),
+    opacity: document.getElementById(`${group.prefix}Opacity`),
+    opacityValue: document.getElementById(`${group.prefix}OpacityValue`)
+  })).filter((group) => group.swatch);
 
-  const syncOpacityUi = () => {
-    const bgPct = Math.round(sysThemeState.bgAlpha * 100);
-    const fgPct = Math.round(sysThemeState.fgAlpha * 100);
-    if (bgOpacity) bgOpacity.value = String(bgPct);
-    if (fgOpacity) fgOpacity.value = String(fgPct);
-    if (bgOpacityValue) bgOpacityValue.textContent = `${bgPct}%`;
-    if (fgOpacityValue) fgOpacityValue.textContent = `${fgPct}%`;
+  const syncColorGroupUi = (group) => {
+    const color = sysThemeState[group.colorKey] || group.fallback();
+    const pct = Math.round(sysThemeState[group.alphaKey] * 100);
+    group.swatch.value = color;
+    if (group.hex) group.hex.value = color;
+    if (group.opacity) group.opacity.value = String(pct);
+    if (group.opacityValue) group.opacityValue.textContent = `${pct}%`;
   };
-  syncOpacityUi();
+
+  const applyColorGroup = (group) => {
+    applySysTheme({
+      [group.colorKey]: group.swatch.value,
+      [group.alphaKey]: group.opacity ? Number(group.opacity.value) / 100 : undefined
+    });
+    colorGroups.forEach(syncColorGroupUi);
+    saveSysTheme();
+  };
+
+  colorGroups.forEach((group) => {
+    syncColorGroupUi(group);
+    group.swatch.addEventListener('input', () => applyColorGroup(group));
+    group.opacity?.addEventListener('input', () => applyColorGroup(group));
+    group.hex?.addEventListener('change', () => {
+      const v = normalizeHexColor(group.hex.value, '');
+      if (!v) {
+        syncColorGroupUi(group);
+        return;
+      }
+      group.swatch.value = v;
+      applyColorGroup(group);
+    });
+  });
 
   // Select matching font option
   const fontOpts = Array.from(fontSel.options);
@@ -1770,53 +1806,11 @@ function initSettingsPanel() {
   };
 
   const applyAndSave = () => {
-    applySysTheme({
-      bg:   bgSwatch.value,
-      fg:   fgSwatch.value,
-      bgAlpha: bgOpacity ? Number(bgOpacity.value) / 100 : undefined,
-      fgAlpha: fgOpacity ? Number(fgOpacity.value) / 100 : undefined,
-      font: fontSel.value
-    });
-    syncOpacityUi();
+    applySysTheme({ font: fontSel.value });
     saveSysTheme();
   };
 
   renderSettingsFontOptions();
-
-  bgOpacity?.addEventListener('input', applyAndSave);
-  fgOpacity?.addEventListener('input', applyAndSave);
-
-  bgSwatch.addEventListener('input', () => {
-    if (bgHex) bgHex.value = bgSwatch.value;
-    applyAndSave();
-  });
-
-  if (bgHex) {
-    bgHex.addEventListener('change', () => {
-      const v = normalizeHexColor(bgHex.value, '');
-      if (v) {
-        bgSwatch.value = v;
-        bgHex.value = v;
-        applyAndSave();
-      }
-    });
-  }
-
-  fgSwatch.addEventListener('input', () => {
-    if (fgHex) fgHex.value = fgSwatch.value;
-    applyAndSave();
-  });
-
-  if (fgHex) {
-    fgHex.addEventListener('change', () => {
-      const v = normalizeHexColor(fgHex.value, '');
-      if (v) {
-        fgSwatch.value = v;
-        fgHex.value = v;
-        applyAndSave();
-      }
-    });
-  }
 
   fontSel.addEventListener('change', () => {
     syncSettingsFontUi();

@@ -203,24 +203,45 @@
   <!-- Settings panel (slides from behind toolbar) -->
   <div id="settingsPanel" class="settings-panel">
     <div class="settings-panel-inner" id="settingsPanelInner">
+      <div class="settings-section-heading">toolbars &amp; panels</div>
       <div class="settings-control-row settings-control-row-compact">
-        <input type="color" id="settingsBgColor" class="settings-color-swatch settings-color-swatch-lg" value="#ffffff" title="background color">
-        <input type="text" id="settingsBgHex" class="settings-color-hex" value="#ffffff" maxlength="7" spellcheck="false" aria-label="background color hex">
+        <input type="color" id="settingsBgColor" class="settings-color-swatch settings-color-swatch-lg" value="#ffffff" title="toolbar background color">
+        <input type="text" id="settingsBgHex" class="settings-color-hex" value="#ffffff" maxlength="7" spellcheck="false" aria-label="toolbar background color hex">
       </div>
       <div class="settings-opacity-row">
         <span class="settings-toggle-label">background opacity</span>
-        <input type="range" id="settingsBgOpacity" class="settings-opacity-slider" min="0" max="100" step="1" value="100" aria-label="background opacity">
+        <input type="range" id="settingsBgOpacity" class="settings-opacity-slider" min="0" max="100" step="1" value="100" aria-label="toolbar background opacity">
         <span id="settingsBgOpacityValue" class="settings-opacity-value">100%</span>
       </div>
       <div class="settings-control-row settings-control-row-compact">
-        <input type="color" id="settingsFgColor" class="settings-color-swatch settings-color-swatch-sm" value="#000000" title="font and outline color">
-        <input type="text" id="settingsFgHex" class="settings-color-hex" value="#000000" maxlength="7" spellcheck="false" aria-label="font and outline color hex">
+        <input type="color" id="settingsFgColor" class="settings-color-swatch settings-color-swatch-sm" value="#000000" title="toolbar text and outline color">
+        <input type="text" id="settingsFgHex" class="settings-color-hex" value="#000000" maxlength="7" spellcheck="false" aria-label="toolbar text and outline color hex">
       </div>
       <div class="settings-opacity-row">
-        <span class="settings-toggle-label">font / outline opacity</span>
-        <input type="range" id="settingsFgOpacity" class="settings-opacity-slider" min="0" max="100" step="1" value="100" aria-label="font and outline opacity">
+        <span class="settings-toggle-label">text / outline opacity</span>
+        <input type="range" id="settingsFgOpacity" class="settings-opacity-slider" min="0" max="100" step="1" value="100" aria-label="toolbar text and outline opacity">
         <span id="settingsFgOpacityValue" class="settings-opacity-value">100%</span>
       </div>
+      <div class="settings-section-heading">posts</div>
+      <div class="settings-control-row settings-control-row-compact">
+        <input type="color" id="settingsPostBgColor" class="settings-color-swatch settings-color-swatch-lg" value="#000000" title="post background color">
+        <input type="text" id="settingsPostBgHex" class="settings-color-hex" value="#000000" maxlength="7" spellcheck="false" aria-label="post background color hex">
+      </div>
+      <div class="settings-opacity-row">
+        <span class="settings-toggle-label">background opacity</span>
+        <input type="range" id="settingsPostBgOpacity" class="settings-opacity-slider" min="0" max="100" step="1" value="100" aria-label="post background opacity">
+        <span id="settingsPostBgOpacityValue" class="settings-opacity-value">100%</span>
+      </div>
+      <div class="settings-control-row settings-control-row-compact">
+        <input type="color" id="settingsPostFgColor" class="settings-color-swatch settings-color-swatch-sm" value="#ffffff" title="post text color">
+        <input type="text" id="settingsPostFgHex" class="settings-color-hex" value="#ffffff" maxlength="7" spellcheck="false" aria-label="post text color hex">
+      </div>
+      <div class="settings-opacity-row">
+        <span class="settings-toggle-label">text opacity</span>
+        <input type="range" id="settingsPostFgOpacity" class="settings-opacity-slider" min="0" max="100" step="1" value="100" aria-label="post text opacity">
+        <span id="settingsPostFgOpacityValue" class="settings-opacity-value">100%</span>
+      </div>
+      <div class="settings-section-heading">general</div>
       <div class="settings-toggle-row">
         <span class="settings-toggle-label">movement</span>
         <div class="settings-toggle-switch" role="radiogroup" aria-label="movement">

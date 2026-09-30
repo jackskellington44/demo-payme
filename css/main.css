@@ -955,8 +955,8 @@ a.post-external-link:hover {
     --post-card-space: 14px;
     --post-text-card-pad: 22px;
     --post-scale: 1;
-    --post-card-surface: var(--post-overlay-bg, var(--sys-fg));
-    --post-card-ink: var(--post-overlay-color, var(--sys-bg));
+    --post-card-surface: var(--post-overlay-bg, var(--post-bg));
+    --post-card-ink: var(--post-overlay-color, var(--post-fg));
     --post-card-ink-muted: color-mix(in srgb, var(--post-card-ink) 70%, transparent);
     --post-card-line-soft: color-mix(in srgb, var(--post-card-line) 48%, transparent);
     display: flex;
