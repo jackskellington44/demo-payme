@@ -1041,12 +1041,12 @@ export async function loadTracks(options = {}) {
 
     const { data, error } = await query;
 
-    if (error && /playlist_order|column/i.test(String(error.message || ''))) {
+    if (error && supportsPlaylistOrder && /playlist_order/i.test(String(error.message || ''))) {
       supportsPlaylistOrder = false;
       return loadTracks(options);
     }
 
-    if (error && /world_id|column/i.test(String(error.message || ''))) {
+    if (error && supportsWorldScopedPlaylists && /world_id/i.test(String(error.message || ''))) {
       // Backward-compat: fallback to legacy global playlist if migration is not applied yet.
       supportsWorldScopedPlaylists = false;
       let fallback = supabase
@@ -1059,7 +1059,7 @@ export async function loadTracks(options = {}) {
       }
       fallback = await fallback.order('created_at', { ascending: true });
 
-      if (fallback.error && /playlist_order|column/i.test(String(fallback.error.message || ''))) {
+      if (fallback.error && supportsPlaylistOrder && /playlist_order/i.test(String(fallback.error.message || ''))) {
         supportsPlaylistOrder = false;
         return loadTracks(options);
       }

@@ -11433,17 +11433,17 @@ async function bootstrapMainPage() {
       await loadPosts();
     },
     onEnterWorld: async (worldPayload) => {
-      await setMusicWorldContext(worldPayload?.world || null, {
+      void setMusicWorldContext(worldPayload?.world || null, {
         autoplay: autoMusicEnabled,
         forceRestart: true
-      });
+      }).catch((err) => console.warn('Music world switch failed:', err));
       await scheduleWorldModeReload('enter', worldPayload);
     },
     onExitWorld: async () => {
-      await setMusicWorldContext(null, {
+      void setMusicWorldContext(null, {
         autoplay: autoMusicEnabled,
         forceRestart: true
-      });
+      }).catch((err) => console.warn('Music world switch failed:', err));
       await scheduleWorldModeReload('exit');
     },
     onBeforeShowLoader: async () => {
