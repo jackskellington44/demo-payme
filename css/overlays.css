@@ -19,10 +19,11 @@
   --pd-preview-fg: var(--pd-ui-fg);
   --pd-preview-fg-soft: var(--pd-ui-fg-soft);
   z-index: 100;
-  background: color-mix(in srgb, var(--pd-ui-bg) 86%, transparent);
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: none;
   flex-direction: column;
-  background: transparent;
   border: none;
 
   padding: 0;
