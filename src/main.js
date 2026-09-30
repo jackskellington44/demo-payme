@@ -36,6 +36,7 @@
 
 import { supabase } from './supabase-config.js';
 import { api } from './api.js';
+import { appPath, stripBasePath } from './utils/basePath.js';
 import { installPrettyAlerts } from './ui-alerts.js';
 import { initWorldsFeature } from './worlds.js';
 import { attachFakePasswordInput, getFakePasswordValue, setFakePasswordValue } from './password-mask.js';
@@ -2412,7 +2413,7 @@ async function tryDropPlacement(e) {
 // ============================================
 
 function normalizeAuthPathname(pathname = '/') {
-  const rawPath = String(pathname || '/').trim() || '/';
+  const rawPath = stripBasePath(String(pathname || '/').trim() || '/');
   const basePath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
 
   if (basePath === '/main.html') return '/';
@@ -2496,8 +2497,8 @@ async function checkAuth() {
 
       const safeNext = (currentPath === '/login' || currentPath === '/') ? '' : currentPath;
       const loginUrl = safeNext
-        ? `/login?next=${encodeURIComponent(safeNext)}`
-        : '/login';
+        ? `${appPath('/login')}?next=${encodeURIComponent(safeNext)}`
+        : appPath('/login');
       window.location.replace(loginUrl);
     };
 
@@ -2613,8 +2614,8 @@ async function checkAuth() {
 }
 
 function getBootWorldPathSegment() {
-  const path = (window.location.pathname || '/').trim();
-  if (path === '/' || path === '') return null;
+  const path = stripBasePath((window.location.pathname || '/').trim());
+  if (path === '/' || path === '' || path === '/main.html' || path === '/index.html') return null;
   // Take the first path segment, e.g. /moneytree -> 'moneytree'
   const segment = path.replace(/^\//, '').split('/')[0];
   if (!segment || segment.toLowerCase() === 'login') return null;

@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
 import { attachFakePasswordInput, getFakePasswordValue, setFakePasswordValue } from './password-mask.js';
+import { appPath, stripBasePath } from './utils/basePath.js';
 
 const WORLD_BUCKET = 'worlds';
 const WORLD_QUERY_PARAM = 'world';
@@ -2509,11 +2510,11 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
     const slug = getWorldPathSlug(world);
     if (!slug) return;
     const current = new URL(window.location.href);
-    const currentSlug = normalizeWorldPathSegment(current.pathname);
+    const currentSlug = normalizeWorldPathSegment(stripBasePath(current.pathname));
     if (currentSlug === slug && !current.searchParams.has(WORLD_QUERY_PARAM)) return;
 
     const next = new URL(window.location.href);
-    next.pathname = `/${encodeURIComponent(slug)}`;
+    next.pathname = appPath(`/${encodeURIComponent(slug)}`);
     next.search = '';
     window.history.replaceState(window.history.state, '', `${next.pathname}${next.search}${next.hash}`);
   }
@@ -2521,11 +2522,11 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
   function clearWorldUrl() {
     const current = new URL(window.location.href);
     const hasWorldQuery = current.searchParams.has(WORLD_QUERY_PARAM);
-    const hasWorldPath = Boolean(normalizeWorldPathSegment(current.pathname));
+    const hasWorldPath = Boolean(normalizeWorldPathSegment(stripBasePath(current.pathname)));
     if (!hasWorldQuery && !hasWorldPath) return;
 
     const next = new URL(window.location.href);
-    next.pathname = '/';
+    next.pathname = appPath('/');
     next.search = '';
     window.history.replaceState(window.history.state, '', `${next.pathname}${next.hash}`);
   }
@@ -5350,7 +5351,7 @@ Delete contained worlds to remove the full subtree, or move only the direct chil
       alert(`Logout failed: ${error.message}`);
       return;
     }
-    window.location.replace('/login');
+    window.location.replace(appPath('/login'));
   });
   dom.modeEditBtn?.addEventListener('click', async () => {
     if (!activeWorld?.id) return;

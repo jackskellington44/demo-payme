@@ -16,6 +16,7 @@ import { api } from './api.js';
 import { supabase } from './supabase-config.js';
 import { installPrettyAlerts } from './ui-alerts.js';
 import { attachFakePasswordInput, getFakePasswordValue } from './password-mask.js';
+import { appPath, stripBasePath } from './utils/basePath.js';
 
 // ============================================
 // 0. PROFILE PICTURE GRID SETUP
@@ -43,31 +44,32 @@ function getLandingWorldId() {
 // Returns the safe post-auth destination from ?next=, or '/' as default.
 // Rules: same-origin only, path-only (no nested next chains), never /login.
 function getPostAuthRedirectTarget() {
+  const home = appPath('/');
   try {
     const raw = new URLSearchParams(window.location.search).get('next') || '';
-    if (!raw || raw.length > 256) return '/';
+    if (!raw || raw.length > 256) return home;
 
     // Decode once — reject anything that still contains 'next=' after decode
     // (catches doubly-encoded nested next= values).
     let decoded;
-    try { decoded = decodeURIComponent(raw); } catch { return '/'; }
-    if (/[?&]next=/i.test(decoded)) return '/';
+    try { decoded = decodeURIComponent(raw); } catch { return home; }
+    if (/[?&]next=/i.test(decoded)) return home;
 
     const parsed = new URL(decoded, window.location.origin);
-    if (parsed.origin !== window.location.origin) return '/';
+    if (parsed.origin !== window.location.origin) return home;
 
-    const path = parsed.pathname || '/';
+    const path = stripBasePath(parsed.pathname || '/');
     // Never send back to /login or legacy html names.
     if (
       path === '/login' ||
       path === '/login.html' ||
       path === '/index.html' ||
       path === '/index'
-    ) return '/';
+    ) return home;
 
-    return path.startsWith('/') ? path : '/';
+    return path.startsWith('/') ? appPath(path) : home;
   } catch {
-    return '/';
+    return home;
   }
 }
 
